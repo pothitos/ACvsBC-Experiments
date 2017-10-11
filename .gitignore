@@ -1,0 +1,25 @@
+# Compiled object files
+*.o
+
+# Compiled static libraries
+*.a
+
+# CMake intermediate Files
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+CTestTestfile.cmake
+DartConfiguration.tcl
+Testing
+
+# Naxos executables
+*.AC
+crew_scheduling
+magic_square
+nqueens
+tsp
+
+# XCSP3 downloaded files
+apps/XCSP3/parser/
+apps/XCSP3/verification/XCSP3-Java-Tools/
