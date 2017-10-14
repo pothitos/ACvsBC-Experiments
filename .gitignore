@@ -19,3 +19,6 @@ crew_scheduling
 magic_square
 nqueens
 tsp
+
+# Produced datasets
+*.dat
