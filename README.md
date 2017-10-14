@@ -1,7 +1,8 @@
 # Arc Consistency vs. Bounds Consistency Sources
 
-:warning: Here is the _source code_ that supports the
-corresponding [article](https://github.com/pothitos/ACvsBC).
+:warning: This repository contains the _source code_ that
+supports the corresponding
+[article](https://github.com/pothitos/ACvsBC).
 
 ## Mission Statement
 
