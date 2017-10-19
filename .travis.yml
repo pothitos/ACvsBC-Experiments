@@ -1,0 +1,15 @@
+# This is used by Travis CI site in
+# order to build and test online.
+
+language: cpp
+
+matrix:
+  include:
+    - env: DIRECTORY="apps/"
+
+script:
+    - cd $DIRECTORY
+    - cmake .
+    - make -j
+    - ctest -V
+    - cd -
