@@ -44,3 +44,6 @@ add_executable(magic_square.BC magic_square.cpp)
 target_link_libraries(magic_square.BC naxos)
 target_include_directories(magic_square.BC
                            PRIVATE ../naxos-bounds-consistency/core)
+
+enable_testing()
+add_test(verification verification.sh)
