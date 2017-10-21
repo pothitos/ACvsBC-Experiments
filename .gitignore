@@ -15,10 +15,14 @@ Testing
 
 # Naxos executables
 *.AC
+*.BC
 crew_scheduling
 magic_square
 nqueens
 tsp
+
+# External projects
+/naxos-bounds-consistency
 
 # Produced datasets
 *.dat
