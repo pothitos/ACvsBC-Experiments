@@ -6,6 +6,10 @@ language: cpp
 matrix:
   include:
     - env: DIRECTORY="apps/"
+      addons:
+        apt:
+          packages:
+            - gnuplot
 
 script:
     - cd $DIRECTORY
