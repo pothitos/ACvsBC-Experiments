@@ -1,6 +1,7 @@
 #! /bin/sh
 set -e
 
+cd ../apps/
 echo "CSP\tParam\tn\td\te\tAC_Time\tBC_Time"
 echo
 echo
