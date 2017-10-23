@@ -17,10 +17,9 @@ echo
 CREW_SCHEDULING_RANGE=OR-Library/*
 for PARAM in $CREW_SCHEDULING_RANGE
 do
-    time -o AC_Time.txt -f "%e" crew_scheduling/crew_scheduling.AC $PARAM > \
-        /dev/null
-    time -o BC_Time.txt -f "%e" crew_scheduling/crew_scheduling.BC $PARAM |
-        tail -1 > n_d_e.txt
+    time -o AC_Time.txt -f "%e" ./crew_scheduling.AC $PARAM > /dev/null
+    time -o BC_Time.txt -f "%e" ./crew_scheduling.BC $PARAM | tail -1 > \
+        n_d_e.txt
     echo "CrewSch\t$(basename $PARAM .txt)\t$(cat n_d_e.txt)\t$(cat \
           AC_Time.txt)\t$(cat BC_Time.txt)"
 done
@@ -29,8 +28,8 @@ echo
 TSP_RANGE=$(seq 9 14)
 for PARAM in $TSP_RANGE
 do
-    time -o AC_Time.txt -f "%e" TSP/tsp.AC HA30.pl $PARAM > /dev/null
-    time -o BC_Time.txt -f "%e" TSP/tsp.BC HA30.pl $PARAM | tail -1 > n_d_e.txt
+    time -o AC_Time.txt -f "%e" ./tsp.AC HA30.pl $PARAM > /dev/null
+    time -o BC_Time.txt -f "%e" ./tsp.BC HA30.pl $PARAM | tail -1 > n_d_e.txt
     echo "TSP\t$PARAM\t$(cat n_d_e.txt)\t$(cat AC_Time.txt)\t$(cat BC_Time.txt)"
 done
 echo
