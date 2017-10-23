@@ -1,4 +1,4 @@
-# Arc Consistency vs. Bounds Consistency Sources
+# Arc Consistency vs. Bounds Consistency Sources [![Build Status](https://travis-ci.org/pothitos/ACvsBC-Experiments.svg?branch=master)](https://travis-ci.org/pothitos/ACvsBC-Experiments)
 
 :warning: This repository contains the _source code_ that
 supports the corresponding
