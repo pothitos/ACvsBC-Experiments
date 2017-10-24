@@ -16,3 +16,6 @@ cd figures/
 ./ACvsBC.plt
 # Clean up
 rm ACvsBC.tex ACvsBC.eps
+cd -
+# Experiment with XCSP3 instances
+./xcsp3.sh
