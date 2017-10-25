@@ -1,10 +1,12 @@
 #! /bin/sh
 set -ev
 
+# Ensure that the files aren't already patched
+cd ../naxos-bounds-consistency/apps/XCSP3/
+git checkout CMakeLists.txt naxos-xcsp3.cpp
 #TODO: Patch solver to print CSP parameters
 
 # Compile XCSP3 mini-parser
-cd ../naxos-bounds-consistency/apps/XCSP3/
 cmake .
 make -j naxos-xcsp3
 mv naxos-xcsp3 naxos-xcsp3.BC
