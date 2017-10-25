@@ -1,0 +1,17 @@
+diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
+index d9122b7..d578d12 100644
+--- a/apps/XCSP3/translator.h
++++ b/apps/XCSP3/translator.h
+@@ -159,6 +159,12 @@ class Xcsp3_to_Naxos : public XCSP3Core::XCSP3CoreCallbacks {
+         {
+         }
+ 
++        /// Destructor
++        ~Xcsp3_to_Naxos(void)
++        {
++                pm.printCspParameters();
++        }
++
+         /// Returns true if we are in COP mode
+         bool constraintOptimisation(void) const
+         {

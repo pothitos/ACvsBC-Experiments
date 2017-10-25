@@ -3,8 +3,9 @@ set -ev
 
 # Ensure that the files aren't already patched
 cd ../naxos-bounds-consistency/apps/XCSP3/
-git checkout CMakeLists.txt naxos-xcsp3.cpp
-#TODO: Patch solver to print CSP parameters
+git checkout translator.h CMakeLists.txt
+# Patch solver to print CSP parameters
+git apply ../../../experiments/xcsp3-print-parameters.patch
 
 # Compile XCSP3 mini-parser
 cmake .
