@@ -1,6 +1,8 @@
 #! /bin/sh
 set -ev
 
+#TODO: Patch solver to print CSP parameters
+
 # Compile XCSP3 mini-parser
 cd ../naxos-bounds-consistency/apps/XCSP3/
 cmake .
