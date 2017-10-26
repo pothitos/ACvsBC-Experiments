@@ -273,6 +273,9 @@ class NsIntVar;
 typedef NsDeque<NsIntVar*> PointArray_t;
 typedef PointArray_t::size_type NsIndex;
 
+/// Array index maximum size
+const NsIndex NsINDEX_INF = PointArray_t().max_size();
+
 ///  The Ns_HistoryId_t of an object can be used to see whether it is valid.
 
 ///  Each frame of the Ns_StackSearch NsProblemManager::searchNodes is
