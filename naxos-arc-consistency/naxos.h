@@ -7,6 +7,7 @@
 #include <ctime>
 #include <deque>
 #include <iostream>
+#include <list>
 
 #ifdef __GNUC__
 #if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 3)
@@ -183,6 +184,70 @@ class NsDeque : public std::deque<TemplType> {
                 if (std::deque<TemplType>::size() == 0)
                         throw std::out_of_range("NsDeque::back: Empty deque");
                 return std::deque<TemplType>::back();
+        }
+};
+
+/// std::list with exceptions enabled
+template <typename TemplType>
+class NsList : public std::list<TemplType> {
+
+    public:
+        NsList(void)
+        {
+        }
+
+        NsList(TemplType item)
+        {
+                this->push_back(item);
+        }
+
+        NsList(TemplType item1, TemplType item2)
+        {
+                this->push_back(item1);
+                this->push_back(item2);
+        }
+
+        typename std::list<TemplType>::reference front(void)
+        {
+                if (std::list<TemplType>::empty())
+                        throw std::out_of_range("NsList::front: Empty list");
+                return std::list<TemplType>::front();
+        }
+
+        typename std::list<TemplType>::const_reference front(void) const
+        {
+                if (std::list<TemplType>::empty())
+                        throw std::out_of_range("NsList::front: Empty list");
+                return std::list<TemplType>::front();
+        }
+
+        typename std::list<TemplType>::reference back(void)
+        {
+                if (std::list<TemplType>::empty())
+                        throw std::out_of_range("NsList::back: Empty list");
+                return std::list<TemplType>::back();
+        }
+
+        typename std::list<TemplType>::const_reference back(void) const
+        {
+                if (std::list<TemplType>::empty())
+                        throw std::out_of_range("NsList::back: Empty list");
+                return std::list<TemplType>::back();
+        }
+
+        void pop_front(void)
+        {
+                if (std::list<TemplType>::empty())
+                        throw std::out_of_range(
+                            "NsList::pop_front: Empty list");
+                std::list<TemplType>::pop_front();
+        }
+
+        void pop_back(void)
+        {
+                if (std::list<TemplType>::empty())
+                        throw std::out_of_range("NsList::pop_back: Empty list");
+                std::list<TemplType>::pop_back();
         }
 };
 
