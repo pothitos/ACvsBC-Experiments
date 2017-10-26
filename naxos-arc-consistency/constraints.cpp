@@ -2441,6 +2441,120 @@ void ConstrAllDiffStrong::LocalArcCons(QueueItem& Qitem)
         AllDiffBoundsConsistency(VarArr, Capacity, groupFired, this);
 }
 
+Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
+                               const NsDeque<NsDeque<NsInt>>& table_init,
+                               const bool isSupportsTable_init)
+  : VarArr(VarArr_init),
+    table(table_init),
+    isSupportsTable(isSupportsTable_init)
+{
+        assert_Ns(VarArr.size() >= 2,
+                  "A table constraint must refer at least to two variables");
+        for (NsDeque<NsDeque<NsInt>>::const_iterator tuple = table.begin();
+             tuple != table.end(); ++tuple) {
+                assert_Ns(VarArr.size() == tuple->size(),
+                          "Variable array's and table constraint tuple's sizes "
+                          "mismatch");
+        }
+        NsIntVarArray::iterator X = VarArr.begin();
+        NsProblemManager& pm = X->manager();
+        ++X;
+        for (; X != VarArr.end(); ++X) {
+                assert_Ns(&pm == &X->manager(),
+                          "Ns_ConstrTable::Ns_ConstrTable: All the "
+                          "variables of a constraint must belong to the same "
+                          "NsProblemManager");
+        }
+}
+
+void update_min_max(const NsInt candidate, NsInt& min, NsInt& max)
+{
+        if (candidate < min)
+                min = candidate;
+        if (candidate > max)
+                max = candidate;
+}
+
+void Ns_ConstrTable::ArcConsSupports(void)
+{
+        // Initialize the supported variables' bounds
+        NsDeque<NsInt> VarArrMin(VarArr.size());
+        NsDeque<NsInt> VarArrMax(VarArr.size());
+        NsDeque<NsInt>::size_type i;
+        for (i = 0; i < VarArr.size(); ++i) {
+                VarArrMin[i] = NsPLUS_INF;
+                VarArrMax[i] = NsMINUS_INF;
+        }
+        // Iterate through the tuples of supporting values
+        for (NsDeque<NsDeque<NsInt>>::const_iterator tuple = table.begin();
+             tuple != table.end(); ++tuple) {
+                // Iterate through the values for each tuple
+                for (i = 0; i < tuple->size(); ++i)
+                        if (!VarArr[i].contains((*tuple)[i]))
+                                break; // tuple is not supporting
+                if (i == tuple->size()) {
+                        // This is a support tuple!
+                        // Update the (supported) bounds for each variable
+                        for (i = 0; i < tuple->size(); ++i) {
+                                update_min_max((*tuple)[i], VarArrMin[i],
+                                               VarArrMax[i]);
+                        }
+                }
+        }
+        // Update the supported variables' bounds
+        for (i = 0; i < VarArr.size(); ++i) {
+                VarArr[i].removeRange(NsMINUS_INF, VarArrMin[i] - 1, this);
+                VarArr[i].removeRange(VarArrMax[i] + 1, NsPLUS_INF, this);
+        }
+}
+
+void Ns_ConstrTable::ArcConsConflicts(void)
+{
+        // Delete conflicting values when one unbound variable exists
+        NsIndex lastUnboundIndex = NsINDEX_INF;
+        for (NsIndex i = 0; i < VarArr.size(); ++i) {
+                // Check if current variable is the last one
+                if (i == VarArr.size() - 1 && lastUnboundIndex == NsINDEX_INF) {
+                        lastUnboundIndex = i;
+                } else if (!VarArr[i].isBound()) {
+                        // Do nothing for more than one unbound vars
+                        if (lastUnboundIndex != NsINDEX_INF)
+                                return;
+                        lastUnboundIndex = i;
+                }
+        }
+        // Iterate through the tuples of conflicting values
+        for (NsDeque<NsDeque<NsInt>>::const_iterator tuple = table.begin();
+             tuple != table.end(); ++tuple) {
+                // Iterate through the values for each tuple
+                NsDeque<NsInt>::size_type i = 0;
+                for (; i < tuple->size(); ++i) {
+                        if (i != lastUnboundIndex &&
+                            (*tuple)[i] != VarArr[i].value())
+                                break; // Break when the tuple doesn't match
+                }
+                if (i == tuple->size()) {
+                        // All the VarArr values matched the tuple!
+                        // Removing the conflicting value
+                        VarArr[lastUnboundIndex].remove(
+                            (*tuple)[lastUnboundIndex]);
+                }
+        }
+}
+
+void Ns_ConstrTable::ArcCons(void)
+{
+        if (isSupportsTable)
+                ArcConsSupports();
+        else
+                ArcConsConflicts();
+}
+
+void Ns_ConstrTable::LocalArcCons(QueueItem& /*Qitem*/)
+{
+        ArcCons();
+}
+
 Ns_ConstrCount::Ns_ConstrCount(NsIntVarArray* VarArr_init,
                                const NsDeque<NsInt>& Values_init,
                                const NsDeque<NsInt>& Occurrences_init)

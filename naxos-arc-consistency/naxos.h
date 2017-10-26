@@ -2074,6 +2074,29 @@ class ConstrAllDiffStrong : public NsConstraint {
         virtual void LocalArcCons(QueueItem& Qitem);
 };
 
+class Ns_ConstrTable : public NsConstraint {
+
+    private:
+        NsIntVarArray& VarArr;
+        const NsDeque<NsDeque<NsInt>>& table;
+        const bool isSupportsTable;
+
+    public:
+        Ns_ConstrTable(NsIntVarArray& VarArr_init,
+                       const NsDeque<NsDeque<NsInt>>& table_init,
+                       const bool isSupportsTable_init);
+
+        virtual int VarsInvolvedIn(void) const
+        {
+                return VarArr.size();
+        }
+
+        virtual void ArcCons(void);
+        virtual void ArcConsSupports(void);
+        virtual void ArcConsConflicts(void);
+        virtual void LocalArcCons(QueueItem& Qitem);
+};
+
 class Ns_ConstrCount : public NsConstraint {
 
     private:
@@ -3093,6 +3116,38 @@ class ExprConstrAllDiff : public ExprConstr {
         }
 };
 
+class Ns_ExprConstrTable : public ExprConstr {
+
+    private:
+        NsIntVarArray& VarArr;
+        const NsDeque<NsDeque<NsInt>>& table;
+        const bool isSupportsTable;
+
+    public:
+        Ns_ExprConstrTable(NsIntVarArray& Arr,
+                           const NsDeque<NsDeque<NsInt>>& table_init,
+                           const bool isSupportsTable_init)
+          : ExprConstr(true),
+            VarArr(Arr),
+            table(table_init),
+            isSupportsTable(isSupportsTable_init)
+        {
+        }
+
+        virtual NsConstraint* postConstraint(bool positively) const;
+
+        virtual void postC(NsIntVar& /*VarX*/, bool /*positively*/) const
+        {
+                throw NsException(
+                    "A table constraint cannot be used as a meta-constraint");
+        }
+        virtual NsIntVar& postC(bool /*positively*/) const
+        {
+                throw NsException(
+                    "A table constraint cannot be used as a meta-constraint");
+        }
+};
+
 class Ns_ExprConstrCount : public ExprConstr {
 
     private:
@@ -3397,6 +3452,18 @@ inline ExprConstrAllDiff NsAllDiff(NsIntVarArray& Arr,
                                    unsigned long Capacity = 0)
 {
         return ExprConstrAllDiff(Arr, Capacity);
+}
+
+inline Ns_ExprConstrTable NsSupports(NsIntVarArray& Arr,
+                                     const NsDeque<NsDeque<NsInt>>& table)
+{
+        return Ns_ExprConstrTable(Arr, table, true);
+}
+
+inline Ns_ExprConstrTable NsConflicts(NsIntVarArray& Arr,
+                                      const NsDeque<NsDeque<NsInt>>& table)
+{
+        return Ns_ExprConstrTable(Arr, table, false);
 }
 
 inline Ns_ExprConstrCount NsCount(NsIntVarArray& Arr,

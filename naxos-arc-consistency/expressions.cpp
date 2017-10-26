@@ -1181,6 +1181,20 @@ NsConstraint* ExprConstrAllDiff::postConstraint(bool positively) const
         return NewConstr;
 }
 
+NsConstraint* Ns_ExprConstrTable::postConstraint(bool positively) const
+{
+        assert_Ns(positively,
+                  "Ns_ExprConstrTable::postConstraint: 'positively'==false");
+        if (VarArr.empty() && table.empty())
+                return 0; // no constraint
+        NsConstraint* newConstr =
+            new Ns_ConstrTable(VarArr, table, isSupportsTable);
+        for (NsIntVarArray::iterator X = VarArr.begin(); X != VarArr.end(); ++X)
+                X->addConstraint(newConstr);
+        VarArr.addConstraint();
+        return newConstr;
+}
+
 NsConstraint* Ns_ExprConstrCount::postConstraint(bool positively) const
 {
         assert_exc(positively,
