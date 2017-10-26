@@ -18,4 +18,4 @@ cd figures/
 rm ACvsBC.tex ACvsBC.eps
 cd -
 # Experiment with XCSP3 instances
-./xcsp3.sh
+XCSP3/competition.sh
