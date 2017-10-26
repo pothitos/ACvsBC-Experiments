@@ -3965,6 +3965,16 @@ class NsProblemManager {
         NsIntVar* VarMinObj;
         NsInt BestMinObj;
 
+    public:
+        /// Exposes the objective variable
+        const NsIntVar& getObjective(void) const
+        {
+                assert_Ns(VarMinObj != 0, "NsProblemManager::getObjective: "
+                                           "Objective variable not set");
+                return *VarMinObj;
+        }
+
+    private:
         // bool  initialized;
         // bool  just_initialized;
         // bool  finished;
