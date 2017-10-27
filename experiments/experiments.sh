@@ -44,4 +44,4 @@ do
     echo "MagicSq\t$PARAM\t$(cat n_d_e.txt)\t$(cat AC_Time.txt)\t$(cat \
           BC_Time.txt)"
 done
-rm n_d_e.txt AC_Time.txt BC_Time.txt
+rm AC_Time.txt BC_Time.txt n_d_e.txt
