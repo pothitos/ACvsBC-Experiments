@@ -1,0 +1,24 @@
+diff --git a/apps/XCSP3/CMakeLists.txt b/apps/XCSP3/CMakeLists.txt
+index 9e73dbd..fec6489 100644
+--- a/apps/XCSP3/CMakeLists.txt
++++ b/apps/XCSP3/CMakeLists.txt
+@@ -3,8 +3,8 @@ set(CMAKE_CXX_FLAGS
+     "${CMAKE_CXX_FLAGS} -pedantic -Wall -W -Wshadow -Werror -std=c++0x -O2 $ENV{COVERAGE}")
+ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s -static-libstdc++ $ENV{COVERAGE}")
+ 
+-include_directories(../../core)
+-add_subdirectory(../../core ../../core)
++include_directories(../../../naxos-arc-consistency)
++add_subdirectory(../../../naxos-arc-consistency ../../../naxos-arc-consistency)
+ 
+ include(ExternalProject)
+ 
+@@ -26,7 +26,7 @@ include_directories(SYSTEM ${LIBXML2_INCLUDE_DIR}
+                     parser/src/XCSP3-CPP-Parser/include)
+ 
+ add_executable(naxos-xcsp3 naxos-xcsp3.cpp translator.cpp)
+-target_link_libraries(naxos-xcsp3 naxos-mini ${LIBXML2_LIBRARIES}
++target_link_libraries(naxos-xcsp3 naxos-AC ${LIBXML2_LIBRARIES}
+                       parserxcsp3core)
+ add_dependencies(naxos-xcsp3 XCSP3-CPP-Parser)
+ 

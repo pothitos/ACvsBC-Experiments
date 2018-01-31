@@ -13,7 +13,7 @@ make -j naxos-xcsp3
 mv naxos-xcsp3 naxos-xcsp3.BC
 
 # Compile against Arc Consistency solver
-#TODO: Patch CMakeLists.txt with recipe for Naxos Arc Consistency
+git apply ../../../experiments/XCSP3/compile-arc-consistency.patch
 cmake .
 make -j naxos-xcsp3
 mv naxos-xcsp3 naxos-xcsp3.AC

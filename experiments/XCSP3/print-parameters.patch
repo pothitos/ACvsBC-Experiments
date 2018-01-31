@@ -1,7 +1,16 @@
 diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
-index d9122b7..d578d12 100644
+index d9122b7..9e2a546 100644
 --- a/apps/XCSP3/translator.h
 +++ b/apps/XCSP3/translator.h
+@@ -32,7 +32,7 @@
+ #define COSOCO_XCSP3PRINTCALLBACKS_H
+ 
+ #include <XCSP3CoreCallbacks.h>
+-#include <naxos-mini.h>
++#include <naxos.h>
+ #include <unordered_map>
+ 
+ /// The XCSP3 parser invokes the functions of this class
 @@ -159,6 +159,12 @@ class Xcsp3_to_Naxos : public XCSP3Core::XCSP3CoreCallbacks {
          {
          }
