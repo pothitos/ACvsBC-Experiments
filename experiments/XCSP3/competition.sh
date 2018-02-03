@@ -14,6 +14,8 @@ mv naxos-xcsp3 naxos-xcsp3.BC
 
 # Compile against Arc Consistency solver
 git apply ../../../experiments/XCSP3/compile-arc-consistency.patch
+# Disable unsupported element constraint
+git apply ../../../experiments/XCSP3/disable-element.patch
 cmake .
 make -j naxos-xcsp3
 mv naxos-xcsp3 naxos-xcsp3.AC
