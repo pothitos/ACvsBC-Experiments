@@ -3,7 +3,7 @@ set -ev
 
 # Ensure that the files aren't already patched
 cd ../naxos-bounds-consistency/apps/XCSP3/
-git checkout translator.h CMakeLists.txt
+git reset --hard
 # Patch solver to print CSP parameters
 git apply ../../../experiments/XCSP3/print-parameters.patch
 
