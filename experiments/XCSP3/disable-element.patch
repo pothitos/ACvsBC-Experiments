@@ -114,6 +114,30 @@ index c28f376..95d2340 100644
          /// @name Constraint Optimization for a variable
  
          virtual void
+diff --git a/apps/XCSP3/verification/CheckerSlowInstances.txt b/apps/XCSP3/verification/CheckerSlowInstances.txt
+index ec8962e..ad78089 100644
+--- a/apps/XCSP3/verification/CheckerSlowInstances.txt
++++ b/apps/XCSP3/verification/CheckerSlowInstances.txt
+@@ -1,7 +1,6 @@
+ verification/XCSP3-Java-Tools/instancesTest/driverlogw-09.xml
+ verification/XCSP3-Java-Tools/instancesTest/GracefulGraph-K02-P04.xml
+ verification/XCSP3-Java-Tools/instancesTest/GraphColoring-3-fullins-4.xml
+-verification/XCSP3-Java-Tools/instancesTest/LangfordBin-08.xml
+ verification/XCSP3-Java-Tools/instancesTest/MarketSplit-01.xml
+ verification/XCSP3-Java-Tools/instancesTest/QuadraticAssignment-bur26a.xml
+ verification/XCSP3-Java-Tools/instancesTest/TravellingSalesman-20-30-00.xml
+diff --git a/apps/XCSP3/verification/CheckerUnsupportedInstances.txt b/apps/XCSP3/verification/CheckerUnsupportedInstances.txt
+index 9073e69..bf4fa9e 100644
+--- a/apps/XCSP3/verification/CheckerUnsupportedInstances.txt
++++ b/apps/XCSP3/verification/CheckerUnsupportedInstances.txt
+@@ -21,6 +21,7 @@ verification/XCSP3-Java-Tools/instancesTest/GraphColoring-qwhdec-o5-h10-1.xml
+ verification/XCSP3-Java-Tools/instancesTest/Hanoi-05.xml
+ verification/XCSP3-Java-Tools/instancesTest/KnightTour-06-ext03.xml
+ verification/XCSP3-Java-Tools/instancesTest/KnightTour-06-int.xml
++verification/XCSP3-Java-Tools/instancesTest/LangfordBin-08.xml
+ verification/XCSP3-Java-Tools/instancesTest/MagicSequence-008-ca.xml
+ verification/XCSP3-Java-Tools/instancesTest/MagicSequence-008-co.xml
+ verification/XCSP3-Java-Tools/instancesTest/MagicSquare-6-mdd.xml
 diff --git a/apps/XCSP3/verification/Element.sol b/apps/XCSP3/verification/Element.sol
 deleted file mode 100644
 index 7d0359a..0000000
