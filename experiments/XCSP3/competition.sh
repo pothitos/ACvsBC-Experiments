@@ -18,6 +18,8 @@ git apply ../../../experiments/XCSP3/compile-arc-consistency.patch
 git apply ../../../experiments/XCSP3/disable-element.patch
 # Disable unsupported division intensional constraints
 git apply ../../../experiments/XCSP3/disable-unsupported-division.patch
+# Disable unsupported modulo intensional constraints
+git apply ../../../experiments/XCSP3/disable-unsupported-modulo.patch
 cmake .
 make -j naxos-xcsp3
 mv naxos-xcsp3 naxos-xcsp3.AC
