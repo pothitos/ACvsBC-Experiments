@@ -1,8 +1,8 @@
 diff --git a/apps/XCSP3/README.md b/apps/XCSP3/README.md
-index 81a6282..b68e4ab 100644
+index 295e118..3abed7c 100644
 --- a/apps/XCSP3/README.md
 +++ b/apps/XCSP3/README.md
-@@ -109,20 +109,6 @@ operators `lt`, `le`, `ge`, `eq`, or `ne`. All of these
+@@ -112,20 +112,6 @@ operators `lt`, `le`, `ge`, `eq`, or `ne`. All of these
  correspond to the ⊙ relational operator of the above
  intensional constraints.
  
@@ -88,7 +88,7 @@ index 3b3287e..82a496e 100644
  {
          if (verbose)
 diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
-index 9e2a546..f84659a 100644
+index c28f376..95d2340 100644
 --- a/apps/XCSP3/translator.h
 +++ b/apps/XCSP3/translator.h
 @@ -378,22 +378,6 @@ class Xcsp3_to_Naxos : public XCSP3Core::XCSP3CoreCallbacks {
