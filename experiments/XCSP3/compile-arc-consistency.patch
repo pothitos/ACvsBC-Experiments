@@ -22,3 +22,16 @@ index eaf35e9..1caef25 100644
                        parserxcsp3core)
  add_dependencies(naxos-xcsp3 XCSP3-CPP-Parser)
  
+diff --git a/apps/XCSP3/verification/test.sh b/apps/XCSP3/verification/test.sh
+index 3c30cf1..2a631c1 100755
+--- a/apps/XCSP3/verification/test.sh
++++ b/apps/XCSP3/verification/test.sh
+@@ -111,7 +111,7 @@ done
+ for INSTANCE in $(cat verification/CheckerSlowInstances.txt)
+ do
+     unlzma --keep $INSTANCE.lzma
+-    timeout --preserve-status --kill-after=1s 10s \
++    timeout --preserve-status --kill-after=1s 20s \
+         ./naxos-xcsp3 $INSTANCE > $SOLUTION
+     validate
+     rm $INSTANCE
