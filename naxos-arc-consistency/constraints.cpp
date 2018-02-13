@@ -1327,9 +1327,9 @@ void ConstrMetaXeqYeqZ::LocalArcCons(QueueItem& Qitem)
 void ConstrXeqYandZ::ArcCons(void)
 {
         MakeBoolean(VarX, this);
-        if (VarX->contains(neg) && (VarY->min() * VarZ->min()))
+        if (VarX->contains(neg) && (VarY->min() && VarZ->min()))
                 VarX->removeSingle(neg, this);
-        if (VarX->contains(!neg) && !(VarY->max() * VarZ->max()))
+        if (VarX->contains(!neg) && !(VarY->max() && VarZ->max()))
                 VarX->removeSingle(!neg, this);
         if (VarX->isBound()) {
                 if (VarX->value() == neg) {
@@ -1365,9 +1365,9 @@ void ConstrXeqYandZ::LocalArcCons(QueueItem& Qitem)
         } else {
                 // assert_exc(VarY == Qitem.getVarFired(),
                 // "ConstrXeqYandZ::LocalArcCons: Wrong getVarFired");
-                if (VarX->contains(neg) && (VarY->min() * VarZ->min()))
+                if (VarX->contains(neg) && (VarY->min() && VarZ->min()))
                         VarX->removeSingle(neg, this);
-                if (VarX->contains(!neg) && !(VarY->max() * VarZ->max()))
+                if (VarX->contains(!neg) && !(VarY->max() && VarZ->max()))
                         VarX->removeSingle(!neg, this);
         }
 }

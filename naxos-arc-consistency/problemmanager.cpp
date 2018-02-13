@@ -34,7 +34,7 @@ Ns_StackSearch::goal_iterator& Ns_StackSearch::goal_iterator::operator++(void)
 void Ns_StackSearch::searchToGraphFile(const char* fileName)
 {
         fileSearchGraph.open(fileName);
-        assert_exc(fileSearchGraph,
+        assert_exc(fileSearchGraph.good(),
                    "Ns_StackSearch::searchToGraphFile: Could not open file");
         fileSearchGraph << "digraph  \"Search Tree\"  {\n\n"
                         << "\tnode [shape=point];\n\n"

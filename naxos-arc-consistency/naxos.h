@@ -653,6 +653,8 @@ class IntDomain {
         friend std::ostream& operator<<(std::ostream& os, const IntDomain& dom);
 };
 
+std::ostream& operator<<(std::ostream& os, const IntDomain& dom);
+
 class NsConstraint;
 typedef NsDeque<NsConstraint*> CONSTR_arr_t;
 
