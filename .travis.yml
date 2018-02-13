@@ -8,8 +8,14 @@ matrix:
     - env: DIRECTORY="apps/"
       addons:
         apt:
+          sources:
+            - ubuntu-toolchain-r-test
           packages:
+            - g++-7
             - gnuplot
+      before_script:
+        - CXX=g++-7
+        - $CXX --version
 
 script:
     - cd $DIRECTORY
