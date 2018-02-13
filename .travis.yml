@@ -12,6 +12,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
+            - valgrind
             - gnuplot
       before_script:
         - CXX=g++-7
