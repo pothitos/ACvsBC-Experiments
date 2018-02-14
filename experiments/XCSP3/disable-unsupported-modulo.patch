@@ -1,5 +1,5 @@
 diff --git a/apps/XCSP3/translator.cpp b/apps/XCSP3/translator.cpp
-index fa52905..0ed99d1 100644
+index f77455a..f673032 100644
 --- a/apps/XCSP3/translator.cpp
 +++ b/apps/XCSP3/translator.cpp
 @@ -418,7 +418,7 @@ NsIntVar& Xcsp3_to_Naxos::unfoldArithmExprOperation(const string& operation,
@@ -33,7 +33,7 @@ index fa52905..0ed99d1 100644
  void Xcsp3_to_Naxos::buildConstraintIntension(string id, string expr)
  {
 diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
-index 00dc929..1991726 100644
+index 97219bf..102169e 100644
 --- a/apps/XCSP3/translator.h
 +++ b/apps/XCSP3/translator.h
 @@ -278,6 +278,12 @@ class Xcsp3_to_Naxos : public XCSP3Core::XCSP3CoreCallbacks {

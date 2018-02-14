@@ -1,5 +1,5 @@
 diff --git a/apps/XCSP3/README.md b/apps/XCSP3/README.md
-index 295e118..3abed7c 100644
+index 46d4adc..20f2bbf 100644
 --- a/apps/XCSP3/README.md
 +++ b/apps/XCSP3/README.md
 @@ -112,20 +112,6 @@ operators `lt`, `le`, `ge`, `eq`, or `ne`. All of these
@@ -20,11 +20,11 @@ index 295e118..3abed7c 100644
 -
 -The above describes the relation `x[i] = v`.
 -
- ## Objective in Constraint Optimisation
+ ## Objective in Constrained Optimization
  
  > The type of the objective cannot be `product` or `lex`,
 diff --git a/apps/XCSP3/translator.cpp b/apps/XCSP3/translator.cpp
-index 3b3287e..82a496e 100644
+index b53b401..952775f 100644
 --- a/apps/XCSP3/translator.cpp
 +++ b/apps/XCSP3/translator.cpp
 @@ -702,59 +702,6 @@ void Xcsp3_to_Naxos::buildConstraintSum(string id, vector<XVariable*>& list,
@@ -88,7 +88,7 @@ index 3b3287e..82a496e 100644
  {
          if (verbose)
 diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
-index c28f376..95d2340 100644
+index 998570c..aec0ee9 100644
 --- a/apps/XCSP3/translator.h
 +++ b/apps/XCSP3/translator.h
 @@ -378,22 +378,6 @@ class Xcsp3_to_Naxos : public XCSP3Core::XCSP3CoreCallbacks {
@@ -111,7 +111,7 @@ index c28f376..95d2340 100644
 -        /// @}
 -
 -        /// @{
-         /// @name Constraint Optimization for a variable
+         /// @name Constrained Optimization for a variable
  
          virtual void
 diff --git a/apps/XCSP3/verification/CheckerSlowInstances.txt b/apps/XCSP3/verification/CheckerSlowInstances.txt

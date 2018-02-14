@@ -1,5 +1,5 @@
 diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
-index 81d1c20..c28f376 100644
+index 4c1529d..998570c 100644
 --- a/apps/XCSP3/translator.h
 +++ b/apps/XCSP3/translator.h
 @@ -32,7 +32,7 @@
@@ -22,5 +22,5 @@ index 81d1c20..c28f376 100644
 +        }
 +
          /// Returns true if we are in COP mode
-         bool constraintOptimisation(void) const
+         bool constrainedOptimization(void) const
          {
