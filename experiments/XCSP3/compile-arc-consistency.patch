@@ -23,10 +23,10 @@ index eaf35e9..1caef25 100644
  add_dependencies(naxos-xcsp3 XCSP3-CPP-Parser)
  
 diff --git a/apps/XCSP3/verification/test.sh b/apps/XCSP3/verification/test.sh
-index bfc5c56..884c6bc 100755
+index d17f81c..06c0afb 100755
 --- a/apps/XCSP3/verification/test.sh
 +++ b/apps/XCSP3/verification/test.sh
-@@ -145,7 +145,7 @@ for INSTANCE in $(cat verification/CheckerSlowInstances.txt)
+@@ -87,7 +87,7 @@ for INSTANCE in $(cat verification/CheckerSlowInstances.txt)
  do
      unlzma --keep $INSTANCE.lzma
      set +e  # Temporarily allow errors
