@@ -22,5 +22,8 @@ git apply ../../../experiments/XCSP3/disable-unsupported-division.patch
 git apply ../../../experiments/XCSP3/disable-unsupported-modulo.patch
 cmake .
 make -j naxos-xcsp3
-ctest -V
+if [ "$CONTINUOUS_INTEGRATION" = "true" ]
+then
+    ctest -V
+fi
 mv naxos-xcsp3 naxos-xcsp3.AC
