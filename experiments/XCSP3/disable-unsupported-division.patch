@@ -32,7 +32,7 @@ index 952775f..f77455a 100644
  void Xcsp3_to_Naxos::buildConstraintIntension(string id, string expr)
  {
 diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
-index aec0ee9..97219bf 100644
+index 77f4785..6d11f86 100644
 --- a/apps/XCSP3/translator.h
 +++ b/apps/XCSP3/translator.h
 @@ -272,6 +272,12 @@ class Xcsp3_to_Naxos : public XCSP3Core::XCSP3CoreCallbacks {
