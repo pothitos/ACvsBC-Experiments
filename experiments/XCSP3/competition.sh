@@ -27,3 +27,13 @@ then
     ctest -V
 fi
 mv naxos-xcsp3 naxos-xcsp3.AC
+
+if [ "$CONTINUOUS_INTEGRATION" = "true" ]
+then
+    cd -
+    # Perform experiments for a limited time frame
+    sed -i.bak 's/40m/1m/' XCSP3/experiments.sh
+    XCSP3/experiments.sh verification/CheckerSlowInstances.txt
+    # Restore the original script
+    mv XCSP3/experiments.sh.bak XCSP3/experiments.sh
+fi
