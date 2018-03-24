@@ -23,7 +23,7 @@ index eaf35e9..1caef25 100644
  add_dependencies(naxos-xcsp3 XCSP3-CPP-Parser)
  
 diff --git a/apps/XCSP3/verification/test.sh b/apps/XCSP3/verification/test.sh
-index 564869f..f6655f4 100755
+index 24115b7..b02b20c 100755
 --- a/apps/XCSP3/verification/test.sh
 +++ b/apps/XCSP3/verification/test.sh
 @@ -87,7 +87,7 @@ for INSTANCE in $(cat verification/CheckerSlowInstances.txt)
