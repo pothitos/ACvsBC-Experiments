@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 set -ev
 
 # Ensure that the files aren't already patched

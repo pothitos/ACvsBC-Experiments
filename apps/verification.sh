@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 set -ev
 cd ../experiments/
 # Set parameters for small CSP instances
