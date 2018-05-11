@@ -1,9 +1,5 @@
 #!/usr/bin/gnuplot
 
-# Settings for direct output to screen window
-set termoption enhanced
-set termoption dash
-
 set border 3
 set tics nomirror
 set logscale y
