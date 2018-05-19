@@ -6,4 +6,7 @@ set tics nomirror
 set xlabel "f(n, d, e)"
 set ylabel "COST_{AC} / COST_{BC}"
 
-plot "results/CompetitionInstancesOptimization.dat" using ($0):($7 / $8) notitle
+f(n, d, e) = n
+
+plot "results/CompetitionInstancesOptimization.dat" using \
+    (f($2, $3, $4)):($7 / $8) notitle

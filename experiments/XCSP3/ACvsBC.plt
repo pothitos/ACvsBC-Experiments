@@ -7,4 +7,6 @@ set logscale y
 set xlabel "f(n, d, e)"
 set ylabel "TIME_{AC} / TIME_{BC}"
 
-plot "results/CompetitionInstances.dat" using ($0):($5 / $6) notitle
+f(n, d, e) = n
+
+plot "results/CompetitionInstances.dat" using (f($2, $3, $4)):($5 / $6) notitle
