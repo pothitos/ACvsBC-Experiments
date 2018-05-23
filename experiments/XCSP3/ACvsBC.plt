@@ -9,4 +9,4 @@ set ylabel "TIME_{AC} / TIME_{BC}"
 
 f(n, d, e) = n
 
-plot "results/CompetitionInstances.dat" using (f($2, $3, $4)):($5 / $6) notitle
+plot "results/CompetitionInstances.dat" using (f($3, $4, $5)):($6 / $7) notitle
