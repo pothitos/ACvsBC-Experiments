@@ -29,7 +29,7 @@ then
     exit 1
 fi
 
-echo "CSP\tn\td\te\tAC_Time\tBC_Time\tAC_Cost\tBC_Cost"
+echo "CSP\tlen\tn\td\te\tAC_Time\tBC_Time\tAC_Cost\tBC_Cost"
 echo
 for INSTANCE in $(cat "$INSTANCE_FILENAMES")
 do
@@ -54,9 +54,9 @@ do
     sed -i "1d" $SOLUTION
     validate_if_solution_exists $STATUS BC
 
-    echo "$(basename $INSTANCE .xml)\t$(cat n_d_e.txt)\t$(cat \
-          AC_Time.txt)\t$(cat BC_Time.txt)\t$(cat AC_Cost.txt)\t$(cat \
-          BC_Cost.txt)"
+    echo "$(basename $INSTANCE .xml)\t$(wc -c < $INSTANCE)\t$(cat \
+          n_d_e.txt)\t$(cat AC_Time.txt)\t$(cat BC_Time.txt)\t$(cat \
+          AC_Cost.txt)\t$(cat BC_Cost.txt)"
     rm $INSTANCE $SOLUTION n_d_e.txt AC_Time.txt BC_Time.txt AC_Cost.txt \
        BC_Cost.txt
 done
