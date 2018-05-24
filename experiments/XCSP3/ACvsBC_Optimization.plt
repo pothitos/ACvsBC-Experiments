@@ -2,11 +2,12 @@
 
 set border 3
 set tics nomirror
+set logscale xy
 
-set xlabel "f(n, d, e)"
+set xlabel "f(len, n, d, e)"
 set ylabel "COST_{AC} / COST_{BC}"
 
-f(n, d, e) = n
+f(len, n, d, e) = len / n
 
 plot "results/CompetitionInstancesOptimization.dat" using \
-    (f($3, $4, $5)):($8 / $9) notitle
+    (f($2, $3, $4, $5)):($8 / $9) notitle

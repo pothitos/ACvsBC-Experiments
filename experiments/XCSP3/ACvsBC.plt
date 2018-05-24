@@ -2,11 +2,12 @@
 
 set border 3
 set tics nomirror
-set logscale y
+set logscale xy
 
-set xlabel "f(n, d, e)"
+set xlabel "f(len, n, d, e)"
 set ylabel "TIME_{AC} / TIME_{BC}"
 
-f(n, d, e) = n
+f(len, n, d, e) = len / n
 
-plot "results/CompetitionInstances.dat" using (f($3, $4, $5)):($6 / $7) notitle
+plot "results/CompetitionInstances.dat" using (f($2, $3, $4, $5)):($6 / $7) \
+     notitle
