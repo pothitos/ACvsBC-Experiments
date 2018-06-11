@@ -1,9 +1,3 @@
-# Compiled object files
-*.o
-
-# Compiled static libraries
-*.a
-
 # CMake intermediate Files
 CMakeCache.txt
 CMakeFiles
@@ -12,10 +6,6 @@ cmake_install.cmake
 CTestTestfile.cmake
 DartConfiguration.tcl
 Testing
-
-# Naxos executables
-*.AC
-*.BC
 
 # External projects
 /naxos-bounds-consistency
