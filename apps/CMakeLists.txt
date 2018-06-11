@@ -4,10 +4,9 @@ set(CMAKE_CXX_FLAGS
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s $ENV{COVERAGE}")
 
 execute_process(COMMAND git clone https://github.com/pothitos/naxos.git
-                ../naxos-bounds-consistency)
+                ../naxos)
 
-add_subdirectory(../naxos-bounds-consistency/core
-                 ../naxos-bounds-consistency/core)
+add_subdirectory(../naxos/core ../naxos/core)
 
 enable_testing()
 add_test(verification verification.sh)

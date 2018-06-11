@@ -2,7 +2,7 @@
 set -ev
 
 # Ensure that the files aren't already patched
-cd ../naxos-bounds-consistency/apps/XCSP3/
+cd ../naxos/apps/XCSP3/
 git reset --hard
 # Patch solver to print CSP parameters
 git apply ../../../experiments/XCSP3/print-parameters.patch

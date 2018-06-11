@@ -8,7 +8,7 @@ DartConfiguration.tcl
 Testing
 
 # External projects
-/naxos-bounds-consistency
+/naxos
 
 # Produced datasets
 *.dat

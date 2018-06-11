@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-cd ../naxos-bounds-consistency/apps/XCSP3
+cd ../naxos/apps/XCSP3
 . verification/common_functions.sh
 SOLUTION="solution.txt"
 
