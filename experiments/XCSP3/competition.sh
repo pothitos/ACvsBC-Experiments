@@ -11,6 +11,7 @@ git apply ../../../experiments/XCSP3/print-parameters.patch
 cmake .
 make -j naxos-xcsp3
 mv naxos-xcsp3 naxos-xcsp3.BC
+git reset --hard
 
 # Compile against Arc Consistency solver
 # TODO
