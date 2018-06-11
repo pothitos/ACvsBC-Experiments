@@ -18,20 +18,3 @@ satisfaction problem_ (CSP).There seems to be a threshold of
 the ratio _d_/_n_: after this theshold, maintaining _bounds
 consistency_ is more efficient than maintaining _arc
 consistency_.
-
-## Completed Tasks
-
-Our above intuition seems true for a couple of CSPs we've
-solved so far.
-
- - _N_ Queens
- - Magic Square
- - Crew Scheduling
-
-## Current Task
-
- - Extend the above problems range.
-
-## Future Task
-
- - Support the intuition through algebraic evidence.
