@@ -5,7 +5,7 @@ set -ev
 cd ../naxos/apps/XCSP3/
 git reset --hard
 # Patch solver to print CSP parameters
-git apply ../../../XCSP3/XCSP3/print-parameters.patch
+git apply ../../../XCSP3/print-parameters.patch
 
 # Compile XCSP3 mini-parser
 cmake .
@@ -16,11 +16,11 @@ git reset --hard
 # Compile against Arc Consistency solver
 # TODO
 # Disable unsupported element constraint
-git apply ../../../XCSP3/XCSP3/disable-element.patch
+git apply ../../../XCSP3/disable-element.patch
 # Disable unsupported division intensional constraints
-git apply ../../../XCSP3/XCSP3/disable-unsupported-division.patch
+git apply ../../../XCSP3/disable-unsupported-division.patch
 # Disable unsupported modulo intensional constraints
-git apply ../../../XCSP3/XCSP3/disable-unsupported-modulo.patch
+git apply ../../../XCSP3/disable-unsupported-modulo.patch
 cmake .
 make -j naxos-xcsp3
 if [ "$CONTINUOUS_INTEGRATION" = "true" ]
@@ -33,8 +33,8 @@ if [ "$CONTINUOUS_INTEGRATION" = "true" ]
 then
     cd -
     # Perform experiments for a limited time frame
-    sed -i.bak 's/40m/1m/' XCSP3/experiments.sh
-    XCSP3/experiments.sh verification/CheckerSlowInstances.txt
+    sed -i.bak 's/40m/1m/' experiments.sh
+    ./experiments.sh verification/CheckerSlowInstances.txt
     # Restore the original script
-    mv XCSP3/experiments.sh.bak XCSP3/experiments.sh
+    mv experiments.sh.bak experiments.sh
 fi
