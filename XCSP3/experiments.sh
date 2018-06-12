@@ -10,7 +10,7 @@ validate_if_solution_exists() {
     METHOD="$2"
     if [ -z "$STATUS" -o -z "$METHOD" ]
     then
-        echo "Missing status and/or method arguments" 1>&2
+        echo "Missing status and/or method arguments" >&2
         exit 1
     fi
     if [ "$(cat $SOLUTION)" = "s UNKNOWN" ]
@@ -25,7 +25,7 @@ validate_if_solution_exists() {
 INSTANCE_FILENAMES="$1"
 if [ -z "$INSTANCE_FILENAMES" ]
 then
-    echo "Missing file with instances names argument" 1>&2
+    echo "Missing file with instances names argument" >&2
     exit 1
 fi
 
