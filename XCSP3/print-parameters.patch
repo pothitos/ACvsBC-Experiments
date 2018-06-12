@@ -11,7 +11,7 @@ index fea9799..701f71c 100644
                  interrupted = false;
                  searching = true;
 diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
-index 4c1529d..d5f5f5f 100644
+index 4c1529d..d26fa77 100644
 --- a/apps/XCSP3/translator.h
 +++ b/apps/XCSP3/translator.h
 @@ -171,6 +171,12 @@ class Xcsp3_to_Naxos : public XCSP3Core::XCSP3CoreCallbacks {

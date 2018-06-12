@@ -32,10 +32,10 @@ index 952775f..f77455a 100644
  void Xcsp3_to_Naxos::buildConstraintIntension(string id, string expr)
  {
 diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
-index 77f4785..6d11f86 100644
+index ef6d74a..9629b21 100644
 --- a/apps/XCSP3/translator.h
 +++ b/apps/XCSP3/translator.h
-@@ -272,6 +272,12 @@ class Xcsp3_to_Naxos : public XCSP3Core::XCSP3CoreCallbacks {
+@@ -266,6 +266,12 @@ class Xcsp3_to_Naxos : public XCSP3Core::XCSP3CoreCallbacks {
          naxos::NsIntVar& unfoldArithmExprOperation(const std::string& operation,
                                                     T1& operand1, T2& operand2);
  
