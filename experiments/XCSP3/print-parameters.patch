@@ -14,15 +14,6 @@ diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
 index 4c1529d..d5f5f5f 100644
 --- a/apps/XCSP3/translator.h
 +++ b/apps/XCSP3/translator.h
-@@ -32,7 +32,7 @@
- #define COSOCO_XCSP3PRINTCALLBACKS_H
- 
- #include <XCSP3CoreCallbacks.h>
--#include <naxos-mini.h>
-+#include <naxos.h>
- #include <unordered_map>
- 
- /// The XCSP3 parser invokes the functions of this class
 @@ -171,6 +171,12 @@ class Xcsp3_to_Naxos : public XCSP3Core::XCSP3CoreCallbacks {
                  return objectiveSign * pm.getObjective().value();
          }
