@@ -5,7 +5,7 @@ set -ev
 cd ../naxos/apps/XCSP3/
 git reset --hard
 # Patch solver to print CSP parameters
-git apply ../../../experiments/XCSP3/print-parameters.patch
+git apply ../../../XCSP3/XCSP3/print-parameters.patch
 
 # Compile XCSP3 mini-parser
 cmake .
@@ -16,11 +16,11 @@ git reset --hard
 # Compile against Arc Consistency solver
 # TODO
 # Disable unsupported element constraint
-git apply ../../../experiments/XCSP3/disable-element.patch
+git apply ../../../XCSP3/XCSP3/disable-element.patch
 # Disable unsupported division intensional constraints
-git apply ../../../experiments/XCSP3/disable-unsupported-division.patch
+git apply ../../../XCSP3/XCSP3/disable-unsupported-division.patch
 # Disable unsupported modulo intensional constraints
-git apply ../../../experiments/XCSP3/disable-unsupported-modulo.patch
+git apply ../../../XCSP3/XCSP3/disable-unsupported-modulo.patch
 cmake .
 make -j naxos-xcsp3
 if [ "$CONTINUOUS_INTEGRATION" = "true" ]

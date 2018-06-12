@@ -5,7 +5,7 @@ language: cpp
 
 matrix:
   include:
-    - env: DIRECTORY="experiments"
+    - env: DIRECTORY="XCSP3"
       addons:
         apt:
           sources:
