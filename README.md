@@ -12,7 +12,7 @@ Constraint Programming.
 
 ## Intuition
 
-Let _n_ be the number of the constraint variables and _d_
+Let _n_ be the number of the constrained variables and _d_
 the cardinality of their maximum domain, in a _constraint
 satisfaction problem_ (CSP).There seems to be a threshold of
 the ratio _d_/_n_: after this theshold, maintaining _bounds
