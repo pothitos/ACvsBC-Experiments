@@ -5,7 +5,7 @@ language: cpp
 
 matrix:
   include:
-    - env: DIRECTORY="apps/"
+    - env: DIRECTORY="experiments"
       addons:
         apt:
           sources:
