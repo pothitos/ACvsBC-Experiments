@@ -17,7 +17,7 @@ matrix:
             - clang-format-5.0
             - gnuplot
       before_script:
-        - CXX=g++-7
+        - CXX="g++-7"
         - $CXX --version
 
 script:
