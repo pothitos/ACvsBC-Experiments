@@ -14,7 +14,9 @@ mv naxos-xcsp3 naxos-xcsp3.BC
 git reset --hard
 
 # Compile against Arc Consistency solver
-# TODO
+cd ../../
+git apply ../XCSP3/patches/mark-unimplemented-propagators.patch
+cd -
 # Disable unsupported element constraint
 git apply ../../../XCSP3/patches/disable-element.patch
 # Disable unsupported division intensional constraints
