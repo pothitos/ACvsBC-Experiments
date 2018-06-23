@@ -6,7 +6,7 @@ index aa8386c..149445f 100644
  
  void Ns_ConstrXeqMin::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqMin: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqMin: Unimplemented consistency level");
          NsInt min, minmax;
          array_min_minmax(VarArr, min, minmax);
          VarX->removeRange(minmax + 1, NsPLUS_INF, this);
@@ -14,7 +14,7 @@ index aa8386c..149445f 100644
  
  void Ns_ConstrXeqMax::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqMax: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqMax: Unimplemented consistency level");
          NsInt maxmin, max;
          array_maxmin_max(VarArr, maxmin, max);
          VarX->removeRange(NsMINUS_INF, maxmin - 1, this);
@@ -22,7 +22,7 @@ index aa8386c..149445f 100644
  // bounds-consistency only
  void Ns_ConstrXeqSum::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqSum: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqSum: Unimplemented consistency level");
          NsInt sumMin, sumMax;
          array_sum_min_max(VarArr, start, length, sumMin, sumMax);
          NsIndex i;
@@ -30,7 +30,7 @@ index aa8386c..149445f 100644
  
  void Ns_ConstrAllDiff::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrAllDiff: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrAllDiff: Unimplemented consistency level");
          NsIntVarArray::iterator X, Y;
          // Dovecote Theorem (to spot a dead-end earlier) //
          NsInt min_of_arr, max_of_arr;
@@ -38,7 +38,7 @@ index aa8386c..149445f 100644
  // bounds-consistency only
  void Ns_ConstrAllDiffStrong::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrAllDiffStrong: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrAllDiffStrong: Unimplemented consistency level");
          allDiffBoundsConsistency(VarArr, Capacity, groupedNsIntVar::FIRST_GROUP,
                                   this);
  }
@@ -46,7 +46,7 @@ index aa8386c..149445f 100644
  
  void Ns_ConstrTable::ArcConsSupports(void)
  {
-+        throw NsException("ArcConsSupports: Unimplemented alternative consistency level");
++        throw NsException("ArcConsSupports: Unimplemented consistency level");
          // Initialize the supported variables' bounds
          NsDeque<NsInt> VarArrMin(VarArr.size());
          NsDeque<NsInt> VarArrMax(VarArr.size());
@@ -54,7 +54,7 @@ index aa8386c..149445f 100644
  
  void Ns_ConstrTable::ArcConsConflicts(void)
  {
-+        throw NsException("ArcConsConflicts: Unimplemented alternative consistency level");
++        throw NsException("ArcConsConflicts: Unimplemented consistency level");
          // Delete conflicting values when one unbound variable exists
          NsIndex lastUnboundIndex = NsINDEX_INF;
          for (NsIndex i = 0; i < VarArr.size(); ++i) {
@@ -62,7 +62,7 @@ index aa8386c..149445f 100644
  
  void Ns_ConstrElement::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrElement: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrElement: Unimplemented consistency level");
          if (!VarIndex->removeRange(NsMINUS_INF, -1, this) ||
              !VarIndex->removeRange(intArray.size(), NsPLUS_INF, this)) {
                  return;
@@ -70,7 +70,7 @@ index aa8386c..149445f 100644
  
  void Ns_ConstrVarArrElement::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrVarArrElement: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrVarArrElement: Unimplemented consistency level");
          NsInt min, max;
          bool modification;
          do {
@@ -82,7 +82,7 @@ index adcd3a3..aabb403 100644
  
  void Ns_ConstrXeqYplusCZspecial::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYplusCZspecial: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYplusCZspecial: Unimplemented consistency level");
          NsIntVar::const_iterator v, vz;
          for (v = VarX->begin(); v != VarX->end(); ++v) {
                  if (!VarY->contains(*v % C) ||
@@ -90,7 +90,7 @@ index adcd3a3..aabb403 100644
  
  void Ns_ConstrXinDomain::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXinDomain: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXinDomain: Unimplemented consistency level");
          VarX->removeRange(NsMINUS_INF, (*domainNext)[VarX->min() - min] - 1,
                            this);
          VarX->removeRange((*domainPrevious)[VarX->max() - min] + 1, NsPLUS_INF,
@@ -98,7 +98,7 @@ index adcd3a3..aabb403 100644
  
  void Ns_ConstrCount::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrCount: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrCount: Unimplemented consistency level");
          for (NsIndex i = 0; i < VarArr->size(); ++i) {
                  countArcCons(*VarArr, i, ValueIndex, ValuesOccurrences, Dwin,
                               this);
@@ -106,7 +106,7 @@ index adcd3a3..aabb403 100644
  
  void Ns_ConstrInverse::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrInverse: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrInverse: Unimplemented consistency level");
          NsIndex i;
          NsIntVar::const_iterator val;
          for (i = 0; i < VArrInv.size(); ++i) {
@@ -118,7 +118,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXlessthanY::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXlessthanY: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXlessthanY: Unimplemented consistency level");
          VarX->removeRange(VarY->max(), NsPLUS_INF, this);
          VarY->removeRange(NsMINUS_INF, VarX->min(), this);
  }
@@ -126,7 +126,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXlesseqthanY::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXlesseqthanY: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXlesseqthanY: Unimplemented consistency level");
          VarX->removeRange(VarY->max() + 1, NsPLUS_INF, this);
          VarY->removeRange(NsMINUS_INF, VarX->min() - 1, this);
  }
@@ -134,7 +134,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrMetaXeqYlessthanC::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrMetaXeqYlessthanC: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrMetaXeqYlessthanC: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if (VarY->max() < C)
                  VarX->removeSingle(0, this);
@@ -142,7 +142,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrMetaXeqYlessthanZ::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrMetaXeqYlessthanZ: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrMetaXeqYlessthanZ: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if (VarY->max() < VarZ->min())
                  VarX->removeSingle(0, this);
@@ -150,7 +150,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrMetaXeqYlesseqthanC::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrMetaXeqYlesseqthanC: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrMetaXeqYlesseqthanC: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if (VarY->max() <= C)
                  VarX->removeSingle(0, this);
@@ -158,7 +158,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrMetaXeqYlesseqthanZ::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrMetaXeqYlesseqthanZ: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrMetaXeqYlesseqthanZ: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if (VarY->max() <= VarZ->min())
                  VarX->removeSingle(0, this);
@@ -166,7 +166,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrMetaXeqYgreaterthanC::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrMetaXeqYgreaterthanC: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrMetaXeqYgreaterthanC: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if (VarY->min() > C)
                  VarX->removeSingle(0, this);
@@ -174,7 +174,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrMetaXeqYgreatereqthanC::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrMetaXeqYgreatereqthanC: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrMetaXeqYgreatereqthanC: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if (VarY->min() >= C)
                  VarX->removeSingle(0, this);
@@ -182,7 +182,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrMetaXeqYeqC::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrMetaXeqYeqC: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrMetaXeqYeqC: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if (VarY->min() == C && VarY->max() == C)
                  VarX->removeSingle(0, this);
@@ -190,7 +190,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrMetaXeqYneqC::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrMetaXeqYneqC: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrMetaXeqYneqC: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if (!VarY->contains(C))
                  VarX->removeSingle(0, this);
@@ -198,7 +198,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqYplusC::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYplusC: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYplusC: Unimplemented consistency level");
          bool modification;
          do {
                  modification = false;
@@ -206,7 +206,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqCminusY::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqCminusY: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqCminusY: Unimplemented consistency level");
          bool modification;
          do {
                  modification = false;
@@ -214,7 +214,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqYtimesC::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYtimesC: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYtimesC: Unimplemented consistency level");
          bool modification;
          do {
                  modification = false;
@@ -222,7 +222,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqY::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqY: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqY: Unimplemented consistency level");
          bool modification;
          do {
                  modification = false;
@@ -230,7 +230,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqYdivC::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYdivC: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYdivC: Unimplemented consistency level");
          bool modification;
          do {
                  modification = false;
@@ -238,7 +238,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqCdivY::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqCdivY: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqCdivY: Unimplemented consistency level");
          bool modification;
          do {
                  modification = false;
@@ -246,7 +246,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqYmodC::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYmodC: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYmodC: Unimplemented consistency level");
          NsInt min, max;
          bool modification;
          do {
@@ -254,7 +254,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqCmodY::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqCmodY: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqCmodY: Unimplemented consistency level");
          NsInt min, max;
          bool modification;
          do {
@@ -262,7 +262,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXneqY::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXneqY: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXneqY: Unimplemented consistency level");
          if (VarY->isBound())
                  VarX->removeSingle(VarY->value(), this);
          if (VarX->isBound())
@@ -270,7 +270,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqAbsY::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqAbsY: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqAbsY: Unimplemented consistency level");
          bool modification;
          do {
                  modification = false;
@@ -278,7 +278,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrMetaXeqYeqZ::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrMetaXeqYeqZ: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrMetaXeqYeqZ: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if (VarY->max() == VarZ->min() && VarY->min() == VarZ->max())
                  VarX->removeSingle(neg, this);
@@ -286,7 +286,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqYandZ::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYandZ: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYandZ: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if ((VarY->min() && VarZ->min()))
                  VarX->removeSingle(neg, this);
@@ -294,7 +294,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqYorZ::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYorZ: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYorZ: Unimplemented consistency level");
          makeBoolean(VarX, this);
          if (VarY->min() + VarZ->min() != 0)
                  VarX->removeSingle(neg, this);
@@ -302,7 +302,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXorY::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXorY: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXorY: Unimplemented consistency level");
          if (VarY->isBound() && VarY->value() == neg)
                  VarX->removeSingle(neg, this);
          if (VarX->isBound() && VarX->value() == neg)
@@ -310,7 +310,7 @@ index 076ad53..1452af5 100644
  // bounds-consistency only
  void Ns_ConstrXeqYplusZ::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYplusZ: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYplusZ: Unimplemented consistency level");
          bool changed_summinmax = true;
          for (;;) {
                  do {
@@ -318,7 +318,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqYtimesZ::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYtimesZ: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYtimesZ: Unimplemented consistency level");
          NsInt min, max;
          bool modification;
          do {
@@ -326,7 +326,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqYdivZ::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYdivZ: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYdivZ: Unimplemented consistency level");
          NsInt min, max;
          bool modification;
          do {
@@ -334,7 +334,7 @@ index 076ad53..1452af5 100644
  
  void Ns_ConstrXeqYmodZ::ArcCons(void)
  {
-+        throw NsException("Ns_ConstrXeqYmodZ: Unimplemented alternative consistency level");
++        throw NsException("Ns_ConstrXeqYmodZ: Unimplemented consistency level");
          NsInt min, max;
          bool modification;
          do {
