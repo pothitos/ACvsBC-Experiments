@@ -14,15 +14,20 @@ mv naxos-xcsp3 naxos-xcsp3.BC
 git reset --hard
 
 # Compile against Arc Consistency solver
-cd ../../
-git apply ../XCSP3/patches/mark-unimplemented-propagators.patch
-cd -
+# TODO: Patch alternative propagation implementation
 cmake .
 make -j naxos-xcsp3
 if [ "$CONTINUOUS_INTEGRATION" = "true" ]
 then
     ctest -V
 fi
+
+# Forbid unimplemented propagators
+cd ../../
+git apply ../XCSP3/patches/mark-unimplemented-propagators.patch
+cd -
+cmake .
+make -j naxos-xcsp3
 mv naxos-xcsp3 naxos-xcsp3.AC
 
 if [ "$CONTINUOUS_INTEGRATION" = "true" ]
