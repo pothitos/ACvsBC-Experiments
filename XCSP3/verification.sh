@@ -32,7 +32,7 @@ mv naxos-xcsp3 naxos-xcsp3.AC
 
 if [ "$CONTINUOUS_INTEGRATION" = "true" ]
 then
-    cd -
+    cd ../../../XCSP3/
     # Perform experiments for a limited time frame
     sed -i.bak 's/40m/1m/' experiments.sh
     ./experiments.sh verification/CheckerSlowInstances.txt
