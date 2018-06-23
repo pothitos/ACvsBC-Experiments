@@ -17,12 +17,6 @@ git reset --hard
 cd ../../
 git apply ../XCSP3/patches/mark-unimplemented-propagators.patch
 cd -
-# Disable unsupported element constraint
-git apply ../../../XCSP3/patches/disable-element.patch
-# Disable unsupported division intensional constraints
-git apply ../../../XCSP3/patches/disable-unsupported-division.patch
-# Disable unsupported modulo intensional constraints
-git apply ../../../XCSP3/patches/disable-unsupported-modulo.patch
 cmake .
 make -j naxos-xcsp3
 if [ "$CONTINUOUS_INTEGRATION" = "true" ]
