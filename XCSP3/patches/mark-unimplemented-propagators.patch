@@ -1,5 +1,5 @@
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index aa8386c..e7a504b 100644
+index aa8386c..149445f 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -84,6 +84,7 @@ Ns_ConstrXeqMax::Ns_ConstrXeqMax(NsIntVar* X, NsIntVarArray* VarArr_init)
@@ -42,15 +42,23 @@ index aa8386c..e7a504b 100644
          allDiffBoundsConsistency(VarArr, Capacity, groupedNsIntVar::FIRST_GROUP,
                                   this);
  }
-@@ -739,6 +744,7 @@ void Ns_ConstrTable::ArcConsConflicts(void)
+@@ -672,6 +677,7 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
  
- void Ns_ConstrTable::ArcCons(void)
+ void Ns_ConstrTable::ArcConsSupports(void)
  {
-+        throw NsException("Ns_ConstrTable: Unimplemented alternative consistency level");
-         if (isSupportsTable)
-                 ArcConsSupports();
-         else
-@@ -752,6 +758,7 @@ void Ns_ConstrTable::LocalArcCons(Ns_QueueItem& /*Qitem*/)
++        throw NsException("ArcConsSupports: Unimplemented alternative consistency level");
+         // Initialize the supported variables' bounds
+         NsDeque<NsInt> VarArrMin(VarArr.size());
+         NsDeque<NsInt> VarArrMax(VarArr.size());
+@@ -705,6 +711,7 @@ void Ns_ConstrTable::ArcConsSupports(void)
+ 
+ void Ns_ConstrTable::ArcConsConflicts(void)
+ {
++        throw NsException("ArcConsConflicts: Unimplemented alternative consistency level");
+         // Delete conflicting values when one unbound variable exists
+         NsIndex lastUnboundIndex = NsINDEX_INF;
+         for (NsIndex i = 0; i < VarArr.size(); ++i) {
+@@ -752,6 +759,7 @@ void Ns_ConstrTable::LocalArcCons(Ns_QueueItem& /*Qitem*/)
  
  void Ns_ConstrElement::ArcCons(void)
  {
@@ -58,7 +66,7 @@ index aa8386c..e7a504b 100644
          if (!VarIndex->removeRange(NsMINUS_INF, -1, this) ||
              !VarIndex->removeRange(intArray.size(), NsPLUS_INF, this)) {
                  return;
-@@ -871,6 +878,7 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
+@@ -871,6 +879,7 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
  
  void Ns_ConstrVarArrElement::ArcCons(void)
  {
