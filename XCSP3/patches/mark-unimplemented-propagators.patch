@@ -1,5 +1,5 @@
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index aa8386c..149445f 100644
+index aa8386c..b09c95b 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -84,6 +84,7 @@ Ns_ConstrXeqMax::Ns_ConstrXeqMax(NsIntVar* X, NsIntVarArray* VarArr_init)
@@ -75,7 +75,7 @@ index aa8386c..149445f 100644
          bool modification;
          do {
 diff --git a/core/non_mini_solver_constraints.cpp b/core/non_mini_solver_constraints.cpp
-index adcd3a3..aabb403 100644
+index adcd3a3..40ca1fb 100644
 --- a/core/non_mini_solver_constraints.cpp
 +++ b/core/non_mini_solver_constraints.cpp
 @@ -10,6 +10,7 @@ using namespace std;
@@ -111,7 +111,7 @@ index adcd3a3..aabb403 100644
          NsIntVar::const_iterator val;
          for (i = 0; i < VArrInv.size(); ++i) {
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 076ad53..1452af5 100644
+index 076ad53..9cb2e8a 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
 @@ -13,6 +13,7 @@ using namespace std;
