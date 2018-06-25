@@ -1,0 +1,57 @@
+diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
+index aa8386c..53b1f97 100644
+--- a/core/array_constraints.cpp
++++ b/core/array_constraints.cpp
+@@ -7,6 +7,7 @@
+ #include "naxos-mini.h"
+ #include <algorithm>
+ #include <cstdlib>
++#include <set>
+ 
+ using namespace naxos;
+ using namespace std;
+@@ -672,14 +673,8 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
+ 
+ void Ns_ConstrTable::ArcConsSupports(void)
+ {
+-        // Initialize the supported variables' bounds
+-        NsDeque<NsInt> VarArrMin(VarArr.size());
+-        NsDeque<NsInt> VarArrMax(VarArr.size());
+         NsDeque<NsInt>::size_type i;
+-        for (i = 0; i < VarArr.size(); ++i) {
+-                VarArrMin[i] = NsPLUS_INF;
+-                VarArrMax[i] = NsMINUS_INF;
+-        }
++        NsDeque<set<NsInt>> VarArrSupportValues(VarArr.size());
+         // Iterate through the tuples of supporting values
+         for (NsDeque<NsDeque<NsInt>>::const_iterator tuple = table.begin();
+              tuple != table.end(); ++tuple) {
+@@ -689,17 +684,20 @@ void Ns_ConstrTable::ArcConsSupports(void)
+                                 break; // tuple is not supporting
+                 if (i == tuple->size()) {
+                         // This is a support tuple!
+-                        // Update the (supported) bounds for each variable
+-                        for (i = 0; i < tuple->size(); ++i) {
+-                                update_min_max((*tuple)[i], VarArrMin[i],
+-                                               VarArrMax[i]);
+-                        }
++                        for (i = 0; i < tuple->size(); ++i)
++                                VarArrSupportValues[i].insert((*tuple)[i]);
+                 }
+         }
+-        // Update the supported variables' bounds
++        // Update the supported variables' values
+         for (i = 0; i < VarArr.size(); ++i) {
+-                VarArr[i].removeRange(NsMINUS_INF, VarArrMin[i] - 1, this);
+-                VarArr[i].removeRange(VarArrMax[i] + 1, NsPLUS_INF, this);
++                NsInt value = NsMINUS_INF;
++                for (set<NsInt>::const_iterator val =
++                         VarArrSupportValues[i].begin();
++                     val != VarArrSupportValues[i].end(); ++val) {
++                        value = *val;
++                        VarArr[i].removeRange(NsMINUS_INF, value - 1, this);
++                }
++                VarArr[i].removeRange(value + 1, NsPLUS_INF, this);
+         }
+ }
+ 

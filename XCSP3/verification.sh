@@ -14,7 +14,9 @@ mv naxos-xcsp3 naxos-xcsp3.BC
 git reset --hard
 
 # Compile against Arc Consistency solver
-# TODO: Patch alternative propagation implementation
+cd ../../
+git apply ../XCSP3/patches/value-oriented-consistency.patch
+cd -
 cmake .
 make -j naxos-xcsp3
 if [ "$CONTINUOUS_INTEGRATION" = "true" ]

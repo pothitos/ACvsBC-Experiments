@@ -1,8 +1,8 @@
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index aa8386c..b09c95b 100644
+index 53b1f97..d8916cf 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
-@@ -84,6 +84,7 @@ Ns_ConstrXeqMax::Ns_ConstrXeqMax(NsIntVar* X, NsIntVarArray* VarArr_init)
+@@ -85,6 +85,7 @@ Ns_ConstrXeqMax::Ns_ConstrXeqMax(NsIntVar* X, NsIntVarArray* VarArr_init)
  
  void Ns_ConstrXeqMin::ArcCons(void)
  {
@@ -10,7 +10,7 @@ index aa8386c..b09c95b 100644
          NsInt min, minmax;
          array_min_minmax(VarArr, min, minmax);
          VarX->removeRange(minmax + 1, NsPLUS_INF, this);
-@@ -103,6 +104,7 @@ void Ns_ConstrXeqMin::ArcCons(void)
+@@ -104,6 +105,7 @@ void Ns_ConstrXeqMin::ArcCons(void)
  
  void Ns_ConstrXeqMax::ArcCons(void)
  {
@@ -18,7 +18,7 @@ index aa8386c..b09c95b 100644
          NsInt maxmin, max;
          array_maxmin_max(VarArr, maxmin, max);
          VarX->removeRange(NsMINUS_INF, maxmin - 1, this);
-@@ -166,6 +168,7 @@ Ns_ConstrXeqSum::Ns_ConstrXeqSum(NsIntVar* X, NsIntVarArray* VarArr_init,
+@@ -167,6 +169,7 @@ Ns_ConstrXeqSum::Ns_ConstrXeqSum(NsIntVar* X, NsIntVarArray* VarArr_init,
  // bounds-consistency only
  void Ns_ConstrXeqSum::ArcCons(void)
  {
@@ -26,7 +26,7 @@ index aa8386c..b09c95b 100644
          NsInt sumMin, sumMax;
          array_sum_min_max(VarArr, start, length, sumMin, sumMax);
          NsIndex i;
-@@ -263,6 +266,7 @@ void allDiffArcCons(NsIntVarArray* VarArr,
+@@ -264,6 +267,7 @@ void allDiffArcCons(NsIntVarArray* VarArr,
  
  void Ns_ConstrAllDiff::ArcCons(void)
  {
@@ -34,7 +34,7 @@ index aa8386c..b09c95b 100644
          NsIntVarArray::iterator X, Y;
          // Dovecote Theorem (to spot a dead-end earlier) //
          NsInt min_of_arr, max_of_arr;
-@@ -630,6 +634,7 @@ void allDiffBoundsConsistency(
+@@ -631,6 +635,7 @@ void allDiffBoundsConsistency(
  // bounds-consistency only
  void Ns_ConstrAllDiffStrong::ArcCons(void)
  {
@@ -42,15 +42,7 @@ index aa8386c..b09c95b 100644
          allDiffBoundsConsistency(VarArr, Capacity, groupedNsIntVar::FIRST_GROUP,
                                   this);
  }
-@@ -672,6 +677,7 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
- 
- void Ns_ConstrTable::ArcConsSupports(void)
- {
-+        throw NsException("ArcConsSupports: Unimplemented consistency level");
-         // Initialize the supported variables' bounds
-         NsDeque<NsInt> VarArrMin(VarArr.size());
-         NsDeque<NsInt> VarArrMax(VarArr.size());
-@@ -705,6 +711,7 @@ void Ns_ConstrTable::ArcConsSupports(void)
+@@ -703,6 +708,7 @@ void Ns_ConstrTable::ArcConsSupports(void)
  
  void Ns_ConstrTable::ArcConsConflicts(void)
  {
@@ -58,7 +50,7 @@ index aa8386c..b09c95b 100644
          // Delete conflicting values when one unbound variable exists
          NsIndex lastUnboundIndex = NsINDEX_INF;
          for (NsIndex i = 0; i < VarArr.size(); ++i) {
-@@ -752,6 +759,7 @@ void Ns_ConstrTable::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+@@ -750,6 +756,7 @@ void Ns_ConstrTable::LocalArcCons(Ns_QueueItem& /*Qitem*/)
  
  void Ns_ConstrElement::ArcCons(void)
  {
@@ -66,7 +58,7 @@ index aa8386c..b09c95b 100644
          if (!VarIndex->removeRange(NsMINUS_INF, -1, this) ||
              !VarIndex->removeRange(intArray.size(), NsPLUS_INF, this)) {
                  return;
-@@ -871,6 +879,7 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
+@@ -869,6 +876,7 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
  
  void Ns_ConstrVarArrElement::ArcCons(void)
  {
