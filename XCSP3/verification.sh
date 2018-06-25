@@ -2,12 +2,13 @@
 set -ev
 
 # Ensure that the files aren't already patched
-cd ../naxos/apps/XCSP3/
+cd ../naxos/
 git reset --hard
 # Patch solver to print CSP parameters
-git apply ../../../XCSP3/patches/print-parameters.patch
+git apply ../XCSP3/patches/print-parameters.patch
 
 # Compile XCSP3 mini-parser
+cd apps/XCSP3/
 cmake .
 make -j naxos-xcsp3
 mv naxos-xcsp3 naxos-xcsp3.BC
