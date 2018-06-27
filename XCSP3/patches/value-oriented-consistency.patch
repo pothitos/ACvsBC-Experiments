@@ -55,3 +55,78 @@ index aa8386c..53b1f97 100644
          }
  }
  
+diff --git a/core/naxos-mini.h b/core/naxos-mini.h
+index 7635e12..8d02005 100644
+--- a/core/naxos-mini.h
++++ b/core/naxos-mini.h
+@@ -1422,7 +1422,7 @@ class Ns_ConstrXeqYtimesC : public Ns_Constraint {
+         Ns_ConstrXeqYtimesC(NsIntVar* X, NsIntVar* Y, const NsInt C_init)
+           : VarX(X), VarY(Y), C(C_init)
+         {
+-                revisionType = BIDIRECTIONAL_CONSISTENCY;
++                revisionType = VALUE_CONSISTENCY;
+                 assert_Ns(&VarX->manager() == &VarY->manager(),
+                           "Ns_ConstrXeqYtimesC::Ns_ConstrXeqYtimesC: All the "
+                           "variables of a constraint must belong to the same "
+diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
+index 076ad53..9edcb33 100644
+--- a/core/var_constraints.cpp
++++ b/core/var_constraints.cpp
+@@ -528,34 +528,32 @@ void Ns_ConstrXeqCminusY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+ 
+ void Ns_ConstrXeqYtimesC::ArcCons(void)
+ {
+-        bool modification;
+-        do {
+-                modification = false;
+-                if (C >= 0) {
+-                        VarX->removeRange(NsMINUS_INF, VarY->min() * C - 1,
+-                                          this, modification);
+-                        VarX->removeRange(VarY->max() * C + 1, NsPLUS_INF, this,
+-                                          modification);
+-                        VarY->removeRange(NsMINUS_INF, VarX->min() / C - 1,
+-                                          this, modification);
+-                        VarY->removeRange(VarX->max() / C + 1, NsPLUS_INF, this,
+-                                          modification);
+-                } else {
+-                        VarX->removeRange(NsMINUS_INF, VarY->max() * C - 1,
+-                                          this, modification);
+-                        VarX->removeRange(VarY->min() * C + 1, NsPLUS_INF, this,
+-                                          modification);
+-                        VarY->removeRange(NsMINUS_INF, VarX->max() / C - 1,
+-                                          this, modification);
+-                        VarY->removeRange(VarX->min() / C + 1, NsPLUS_INF, this,
+-                                          modification);
+-                }
+-        } while (modification);
++        NsIntVar::const_iterator v;
++        for (v = VarX->begin(); v != VarX->end(); ++v) {
++                if (*v % C != 0 || !VarY->contains(*v / C))
++                        VarX->removeSingle(*v, this);
++        }
++        for (v = VarY->begin(); v != VarY->end(); ++v) {
++                if (!VarX->contains(*v * C))
++                        VarY->removeSingle(*v, this);
++        }
+ }
+ 
+-void Ns_ConstrXeqYtimesC::LocalArcCons(Ns_QueueItem& /*Qitem*/)
++void Ns_ConstrXeqYtimesC::LocalArcCons(Ns_QueueItem& Qitem)
+ {
+-        ArcCons();
++        NsInt SupportVal;
++        if (VarX == Qitem.getVarFired()) {
++                SupportVal = Qitem.getW() / C;
++                if (Qitem.getW() % C == 0 && VarY->contains(SupportVal))
++                        VarY->removeSingle(SupportVal, this);
++        } else {
++                assert_Ns(
++                    VarY == Qitem.getVarFired(),
++                    "Ns_ConstrXeqYtimesC::LocalArcCons: Wrong getVarFired");
++                SupportVal = Qitem.getW() * C;
++                if (VarX->contains(SupportVal))
++                        VarX->removeSingle(SupportVal, this);
++        }
+ }
+ 
+ void Ns_ConstrXeqY::ArcCons(void)

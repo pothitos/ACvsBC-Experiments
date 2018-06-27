@@ -103,7 +103,7 @@ index adcd3a3..40ca1fb 100644
          NsIntVar::const_iterator val;
          for (i = 0; i < VArrInv.size(); ++i) {
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 076ad53..9cb2e8a 100644
+index 9edcb33..c91b92e 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
 @@ -13,6 +13,7 @@ using namespace std;
@@ -202,15 +202,7 @@ index 076ad53..9cb2e8a 100644
          bool modification;
          do {
                  modification = false;
-@@ -528,6 +540,7 @@ void Ns_ConstrXeqCminusY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
- 
- void Ns_ConstrXeqYtimesC::ArcCons(void)
- {
-+        throw NsException("Ns_ConstrXeqYtimesC: Unimplemented consistency level");
-         bool modification;
-         do {
-                 modification = false;
-@@ -560,6 +573,7 @@ void Ns_ConstrXeqYtimesC::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+@@ -557,6 +569,7 @@ void Ns_ConstrXeqYtimesC::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXeqY::ArcCons(void)
  {
@@ -218,7 +210,7 @@ index 076ad53..9cb2e8a 100644
          bool modification;
          do {
                  modification = false;
-@@ -581,6 +595,7 @@ void Ns_ConstrXeqY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+@@ -578,6 +591,7 @@ void Ns_ConstrXeqY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
  
  void Ns_ConstrXeqYdivC::ArcCons(void)
  {
@@ -226,7 +218,7 @@ index 076ad53..9cb2e8a 100644
          bool modification;
          do {
                  modification = false;
-@@ -613,6 +628,7 @@ void Ns_ConstrXeqYdivC::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+@@ -610,6 +624,7 @@ void Ns_ConstrXeqYdivC::LocalArcCons(Ns_QueueItem& /*Qitem*/)
  
  void Ns_ConstrXeqCdivY::ArcCons(void)
  {
@@ -234,7 +226,7 @@ index 076ad53..9cb2e8a 100644
          bool modification;
          do {
                  modification = false;
-@@ -705,6 +721,7 @@ void YmodC_min_max(const NsIntVar* VarY, const NsInt C, NsInt& min, NsInt& max)
+@@ -702,6 +717,7 @@ void YmodC_min_max(const NsIntVar* VarY, const NsInt C, NsInt& min, NsInt& max)
  
  void Ns_ConstrXeqYmodC::ArcCons(void)
  {
@@ -242,7 +234,7 @@ index 076ad53..9cb2e8a 100644
          NsInt min, max;
          bool modification;
          do {
-@@ -759,6 +776,7 @@ void CmodY_min_max(const NsInt C, NsIntVar* VarY, NsInt& min, NsInt& max)
+@@ -756,6 +772,7 @@ void CmodY_min_max(const NsInt C, NsIntVar* VarY, NsInt& min, NsInt& max)
  
  void Ns_ConstrXeqCmodY::ArcCons(void)
  {
@@ -250,7 +242,7 @@ index 076ad53..9cb2e8a 100644
          NsInt min, max;
          bool modification;
          do {
-@@ -790,6 +808,7 @@ void Ns_ConstrXeqCmodY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+@@ -787,6 +804,7 @@ void Ns_ConstrXeqCmodY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
  
  void Ns_ConstrXneqY::ArcCons(void)
  {
@@ -258,7 +250,7 @@ index 076ad53..9cb2e8a 100644
          if (VarY->isBound())
                  VarX->removeSingle(VarY->value(), this);
          if (VarX->isBound())
-@@ -811,6 +830,7 @@ void Ns_ConstrXneqY::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -808,6 +826,7 @@ void Ns_ConstrXneqY::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXeqAbsY::ArcCons(void)
  {
@@ -266,7 +258,7 @@ index 076ad53..9cb2e8a 100644
          bool modification;
          do {
                  modification = false;
-@@ -841,6 +861,7 @@ bool intersectionEmpty(const NsIntVar* VarY, const NsIntVar* VarZ)
+@@ -838,6 +857,7 @@ bool intersectionEmpty(const NsIntVar* VarY, const NsIntVar* VarZ)
  
  void Ns_ConstrMetaXeqYeqZ::ArcCons(void)
  {
@@ -274,7 +266,7 @@ index 076ad53..9cb2e8a 100644
          makeBoolean(VarX, this);
          if (VarY->max() == VarZ->min() && VarY->min() == VarZ->max())
                  VarX->removeSingle(neg, this);
-@@ -943,6 +964,7 @@ void Ns_ConstrMetaXeqYeqZ::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -940,6 +960,7 @@ void Ns_ConstrMetaXeqYeqZ::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXeqYandZ::ArcCons(void)
  {
@@ -282,7 +274,7 @@ index 076ad53..9cb2e8a 100644
          makeBoolean(VarX, this);
          if ((VarY->min() && VarZ->min()))
                  VarX->removeSingle(neg, this);
-@@ -985,6 +1007,7 @@ void Ns_ConstrXeqYandZ::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -982,6 +1003,7 @@ void Ns_ConstrXeqYandZ::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXeqYorZ::ArcCons(void)
  {
@@ -290,7 +282,7 @@ index 076ad53..9cb2e8a 100644
          makeBoolean(VarX, this);
          if (VarY->min() + VarZ->min() != 0)
                  VarX->removeSingle(neg, this);
-@@ -1027,6 +1050,7 @@ void Ns_ConstrXeqYorZ::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -1024,6 +1046,7 @@ void Ns_ConstrXeqYorZ::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXorY::ArcCons(void)
  {
@@ -298,7 +290,7 @@ index 076ad53..9cb2e8a 100644
          if (VarY->isBound() && VarY->value() == neg)
                  VarX->removeSingle(neg, this);
          if (VarX->isBound() && VarX->value() == neg)
-@@ -1049,6 +1073,7 @@ void Ns_ConstrXorY::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -1046,6 +1069,7 @@ void Ns_ConstrXorY::LocalArcCons(Ns_QueueItem& Qitem)
  // bounds-consistency only
  void Ns_ConstrXeqYplusZ::ArcCons(void)
  {
@@ -306,7 +298,7 @@ index 076ad53..9cb2e8a 100644
          bool changed_summinmax = true;
          for (;;) {
                  do {
-@@ -1157,6 +1182,7 @@ void product_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
+@@ -1154,6 +1178,7 @@ void product_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
  
  void Ns_ConstrXeqYtimesZ::ArcCons(void)
  {
@@ -314,7 +306,7 @@ index 076ad53..9cb2e8a 100644
          NsInt min, max;
          bool modification;
          do {
-@@ -1285,6 +1311,7 @@ void divisor_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
+@@ -1282,6 +1307,7 @@ void divisor_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
  
  void Ns_ConstrXeqYdivZ::ArcCons(void)
  {
@@ -322,7 +314,7 @@ index 076ad53..9cb2e8a 100644
          NsInt min, max;
          bool modification;
          do {
-@@ -1393,6 +1420,7 @@ void divisor_for_mod_prune_bounds(NsIntVar* VarX, NsIntVar* VarY,
+@@ -1390,6 +1416,7 @@ void divisor_for_mod_prune_bounds(NsIntVar* VarX, NsIntVar* VarY,
  
  void Ns_ConstrXeqYmodZ::ArcCons(void)
  {
