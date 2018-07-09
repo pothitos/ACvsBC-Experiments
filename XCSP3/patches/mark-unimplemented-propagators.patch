@@ -1,5 +1,5 @@
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index 53b1f97..d8916cf 100644
+index d344933..82ae702 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -85,6 +85,7 @@ Ns_ConstrXeqMax::Ns_ConstrXeqMax(NsIntVar* X, NsIntVarArray* VarArr_init)
@@ -42,7 +42,7 @@ index 53b1f97..d8916cf 100644
          allDiffBoundsConsistency(VarArr, Capacity, groupedNsIntVar::FIRST_GROUP,
                                   this);
  }
-@@ -703,6 +708,7 @@ void Ns_ConstrTable::ArcConsSupports(void)
+@@ -706,6 +711,7 @@ void Ns_ConstrTable::ArcConsSupports(void)
  
  void Ns_ConstrTable::ArcConsConflicts(void)
  {
@@ -50,7 +50,7 @@ index 53b1f97..d8916cf 100644
          // Delete conflicting values when one unbound variable exists
          NsIndex lastUnboundIndex = NsINDEX_INF;
          for (NsIndex i = 0; i < VarArr.size(); ++i) {
-@@ -750,6 +756,7 @@ void Ns_ConstrTable::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+@@ -753,6 +759,7 @@ void Ns_ConstrTable::LocalArcCons(Ns_QueueItem& /*Qitem*/)
  
  void Ns_ConstrElement::ArcCons(void)
  {
@@ -58,7 +58,7 @@ index 53b1f97..d8916cf 100644
          if (!VarIndex->removeRange(NsMINUS_INF, -1, this) ||
              !VarIndex->removeRange(intArray.size(), NsPLUS_INF, this)) {
                  return;
-@@ -869,6 +876,7 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
+@@ -872,6 +879,7 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
  
  void Ns_ConstrVarArrElement::ArcCons(void)
  {

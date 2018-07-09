@@ -1,0 +1,100 @@
+diff --git a/core/intvar.cpp b/core/intvar.cpp
+index 351d8dc..1037ae7 100644
+--- a/core/intvar.cpp
++++ b/core/intvar.cpp
+@@ -56,6 +56,13 @@ void Ns_QueueItem::boundChangedBy(const Ns_Constraint* constr)
+             constr, varFired->manager().numConstraintChecks());
+ }
+ 
++/// A value has been removed out of the domain by the constraint constr
++void Ns_QueueItem::domainChangedBy(const Ns_Constraint* constr)
++{
++        removedAnyRec.boundChangedBy(constr,
++                                     varFired->manager().numConstraintChecks());
++}
++
+ /// Adds the tuple (removedValue, constraintThatRemovedIt) of the removedValues
+ void Ns_QueueItem::add(const NsInt removedVal,
+                        const Ns_Constraint* constrThatRemovedIt)
+@@ -107,6 +114,11 @@ bool NsIntVar::removeRange(const NsInt first, const NsInt last,
+                         return false;
+                 } else {
+                         modified = true;
++                        if (queueItem == 0) {
++                                pm->getQueue().push(Ns_QueueItem(this));
++                                queueItem = &pm->getQueue().back();
++                        }
++                        queueItem->domainChangedBy(constr);
+                 }
+         }
+         return true;
+diff --git a/core/naxos-mini.h b/core/naxos-mini.h
+index 7635e12..3fdec3e 100644
+--- a/core/naxos-mini.h
++++ b/core/naxos-mini.h
+@@ -1264,7 +1264,15 @@ class Ns_Constraint {
+                 /// Like BOUNDS_CONSISTENCY, but revision is imposed in both
+                 /// directions. E.g. Revision(i,j) is equivalent to
+                 /// Revision(j,i), where i, j are variables.
+-                BIDIRECTIONAL_CONSISTENCY
++                BIDIRECTIONAL_CONSISTENCY,
++
++                /// Like BIDIRECTIONAL_CONSISTENCY, but enforces arc-consistency
++                /// instead of bounds-consistency.
++                BIDIRECTIONAL_ARC_CONSISTENCY,
++
++                /// Like BIDIRECTIONAL_ARC_CONSISTENCY, but enforced in a single
++                /// direction.
++                ARC_CONSISTENCY
+         };
+ 
+         /// Description of the type of revision function (LocalArcCons) for the
+@@ -3896,6 +3904,9 @@ class Ns_QueueItem {
+         /// Used to record a modification of the bounds (if any)
+         RemovedBoundRecord_t removedBoundRec;
+ 
++        /// Flag for any modification
++        RemovedBoundRecord_t removedAnyRec;
++
+         /// An array that records the values removed from the domain of varFired
+         NsDeque<RemovedValueRecord_t> removedValues;
+ 
+@@ -3917,6 +3928,8 @@ class Ns_QueueItem {
+ 
+         void boundChangedBy(const Ns_Constraint* constr);
+ 
++        void domainChangedBy(const Ns_Constraint* constr);
++
+         void add(const NsInt removedVal,
+                  const Ns_Constraint* constrThatRemovedIt);
+ 
+diff --git a/core/problemmanager.cpp b/core/problemmanager.cpp
+index 2de61b7..9eb5da1 100644
+--- a/core/problemmanager.cpp
++++ b/core/problemmanager.cpp
+@@ -484,6 +484,25 @@ Ns_Constraint* Ns_QueueItem::getNextConstraint(void)
+                                     .constr;
+                         }
+                         break;
++                case Ns_Constraint::BIDIRECTIONAL_ARC_CONSISTENCY:
++                        if (removedAnyRec.removedBound &&
++                            removedAnyRec.removalTime >=
++                                varFired->constraints[currentConstr]
++                                    .constr->lastConstraintCheckTime) {
++                                return varFired->constraints[currentConstr++]
++                                    .constr;
++                        }
++                        break;
++                case Ns_Constraint::ARC_CONSISTENCY:
++                        if (removedAnyRec.removedBound &&
++                            varFired->constraints[currentConstr].constr !=
++                                removedAnyRec.constrFired) {
++                                // No need to check the constraint that
++                                // initiated the propagation.
++                                return varFired->constraints[currentConstr++]
++                                    .constr;
++                        }
++                        break;
+                 default:
+                         throw NsException("Ns_QueueItem::getNextConstraint: "
+                                           "Invalid 'constr->revisionType'");

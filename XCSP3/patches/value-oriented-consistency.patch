@@ -1,5 +1,5 @@
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index aa8386c..53b1f97 100644
+index aa8386c..d344933 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -7,6 +7,7 @@
@@ -10,7 +10,19 @@ index aa8386c..53b1f97 100644
  
  using namespace naxos;
  using namespace std;
-@@ -672,14 +673,8 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
+@@ -650,7 +651,10 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
+     table(table_init),
+     isSupportsTable(isSupportsTable_init)
+ {
+-        revisionType = BIDIRECTIONAL_CONSISTENCY;
++        if (isSupportsTable)
++                revisionType = BIDIRECTIONAL_ARC_CONSISTENCY;
++        else
++                revisionType = BIDIRECTIONAL_CONSISTENCY;
+         assert_Ns(VarArr.size() >= 2,
+                   "A table constraint must refer at least to two variables");
+         for (NsDeque<NsDeque<NsInt>>::const_iterator tuple = table.begin();
+@@ -672,14 +676,8 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
  
  void Ns_ConstrTable::ArcConsSupports(void)
  {
@@ -26,7 +38,7 @@ index aa8386c..53b1f97 100644
          // Iterate through the tuples of supporting values
          for (NsDeque<NsDeque<NsInt>>::const_iterator tuple = table.begin();
               tuple != table.end(); ++tuple) {
-@@ -689,17 +684,20 @@ void Ns_ConstrTable::ArcConsSupports(void)
+@@ -689,17 +687,20 @@ void Ns_ConstrTable::ArcConsSupports(void)
                                  break; // tuple is not supporting
                  if (i == tuple->size()) {
                          // This is a support tuple!
@@ -56,10 +68,10 @@ index aa8386c..53b1f97 100644
  }
  
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
-index 7635e12..39e32eb 100644
+index 3fdec3e..a3abb15 100644
 --- a/core/naxos-mini.h
 +++ b/core/naxos-mini.h
-@@ -1422,7 +1422,7 @@ class Ns_ConstrXeqYtimesC : public Ns_Constraint {
+@@ -1430,7 +1430,7 @@ class Ns_ConstrXeqYtimesC : public Ns_Constraint {
          Ns_ConstrXeqYtimesC(NsIntVar* X, NsIntVar* Y, const NsInt C_init)
            : VarX(X), VarY(Y), C(C_init)
          {
@@ -68,7 +80,7 @@ index 7635e12..39e32eb 100644
                  assert_Ns(&VarX->manager() == &VarY->manager(),
                            "Ns_ConstrXeqYtimesC::Ns_ConstrXeqYtimesC: All the "
                            "variables of a constraint must belong to the same "
-@@ -2202,7 +2202,7 @@ class Ns_ConstrXeqY : public Ns_Constraint {
+@@ -2210,7 +2210,7 @@ class Ns_ConstrXeqY : public Ns_Constraint {
      public:
          Ns_ConstrXeqY(NsIntVar* X, NsIntVar* Y) : VarX(X), VarY(Y)
          {
