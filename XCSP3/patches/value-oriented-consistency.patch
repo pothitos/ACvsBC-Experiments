@@ -1,5 +1,5 @@
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index aa8386c..d344933 100644
+index aa8386c..62d9a50 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -7,6 +7,7 @@
@@ -56,14 +56,14 @@ index aa8386c..d344933 100644
          for (i = 0; i < VarArr.size(); ++i) {
 -                VarArr[i].removeRange(NsMINUS_INF, VarArrMin[i] - 1, this);
 -                VarArr[i].removeRange(VarArrMax[i] + 1, NsPLUS_INF, this);
-+                NsInt value = NsMINUS_INF;
++                NsInt previous_val = NsMINUS_INF;
 +                for (set<NsInt>::const_iterator val =
 +                         VarArrSupportValues[i].begin();
 +                     val != VarArrSupportValues[i].end(); ++val) {
-+                        value = *val;
-+                        VarArr[i].removeRange(NsMINUS_INF, value - 1, this);
++                        VarArr[i].removeRange(previous_val + 1, *val - 1, this);
++                        previous_val = *val;
 +                }
-+                VarArr[i].removeRange(value + 1, NsPLUS_INF, this);
++                VarArr[i].removeRange(previous_val + 1, NsPLUS_INF, this);
          }
  }
  
