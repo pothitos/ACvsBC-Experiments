@@ -26,14 +26,6 @@ index 62d9a50..f46b4df 100644
          NsInt sumMin, sumMax;
          array_sum_min_max(VarArr, start, length, sumMin, sumMax);
          NsIndex i;
-@@ -264,6 +267,7 @@ void allDiffArcCons(NsIntVarArray* VarArr,
- 
- void Ns_ConstrAllDiff::ArcCons(void)
- {
-+        throw NsException("Ns_ConstrAllDiff: Unimplemented consistency level");
-         NsIntVarArray::iterator X, Y;
-         // Dovecote Theorem (to spot a dead-end earlier) //
-         NsInt min_of_arr, max_of_arr;
 @@ -631,6 +635,7 @@ void allDiffBoundsConsistency(
  // bounds-consistency only
  void Ns_ConstrAllDiffStrong::ArcCons(void)

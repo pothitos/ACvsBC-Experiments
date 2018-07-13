@@ -1,0 +1,38 @@
+diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
+index aa8386c..1caf48f 100644
+--- a/core/array_constraints.cpp
++++ b/core/array_constraints.cpp
+@@ -250,7 +250,8 @@ void allDiffArcCons(NsIntVarArray* VarArr,
+                      X != VarArr->end(); ++X) {
+                         if (&*X != newBoundVars.front()) {
+                                 bool wasBound = X->isBound();
+-                                X->removeSingle(val, constraint);
++                                if (val == X->min() || val == X->max())
++                                        X->removeSingle(val, constraint);
+                                 if (!wasBound && X->isBound())
+                                         newBoundVars.push(&*X);
+                         }
+@@ -264,23 +265,6 @@ void allDiffArcCons(NsIntVarArray* VarArr,
+ void Ns_ConstrAllDiff::ArcCons(void)
+ {
+         NsIntVarArray::iterator X, Y;
+-        // Dovecote Theorem (to spot a dead-end earlier) //
+-        NsInt min_of_arr, max_of_arr;
+-        X = VarArr->begin();
+-        min_of_arr = X->min();
+-        max_of_arr = X->max();
+-        ++X;
+-        for (; X != VarArr->end(); ++X) {
+-                if (X->min() < min_of_arr)
+-                        min_of_arr = X->min();
+-                if (X->max() > max_of_arr)
+-                        max_of_arr = X->max();
+-        }
+-        if (static_cast<NsUInt>(max_of_arr - min_of_arr) + 1 < VarArr->size()) {
+-                // all values are inconsistent
+-                VarArr->begin()->removeAll();
+-                return;
+-        }
+         // Classic ArcCons //
+         NsQueue<const NsIntVar*> newBoundVars;
+         for (X = VarArr->begin(); X != VarArr->end(); ++X) {

@@ -4,6 +4,8 @@ set -ev
 # Ensure that the files aren't already patched
 cd ../naxos/
 git reset --hard
+# Enforce plain Bounds Consistency
+git apply ../XCSP3/patches/bounds-oriented-consistency.patch
 # Patch solver to print CSP parameters
 git apply ../XCSP3/patches/print-parameters.patch
 
