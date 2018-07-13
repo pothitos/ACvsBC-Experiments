@@ -1,5 +1,5 @@
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index aa8386c..62d9a50 100644
+index aa8386c..888fe81 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -7,6 +7,7 @@
@@ -10,7 +10,31 @@ index aa8386c..62d9a50 100644
  
  using namespace naxos;
  using namespace std;
-@@ -650,7 +651,10 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
+@@ -264,23 +265,6 @@ void allDiffArcCons(NsIntVarArray* VarArr,
+ void Ns_ConstrAllDiff::ArcCons(void)
+ {
+         NsIntVarArray::iterator X, Y;
+-        // Dovecote Theorem (to spot a dead-end earlier) //
+-        NsInt min_of_arr, max_of_arr;
+-        X = VarArr->begin();
+-        min_of_arr = X->min();
+-        max_of_arr = X->max();
+-        ++X;
+-        for (; X != VarArr->end(); ++X) {
+-                if (X->min() < min_of_arr)
+-                        min_of_arr = X->min();
+-                if (X->max() > max_of_arr)
+-                        max_of_arr = X->max();
+-        }
+-        if (static_cast<NsUInt>(max_of_arr - min_of_arr) + 1 < VarArr->size()) {
+-                // all values are inconsistent
+-                VarArr->begin()->removeAll();
+-                return;
+-        }
+         // Classic ArcCons //
+         NsQueue<const NsIntVar*> newBoundVars;
+         for (X = VarArr->begin(); X != VarArr->end(); ++X) {
+@@ -650,7 +634,10 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
      table(table_init),
      isSupportsTable(isSupportsTable_init)
  {
@@ -22,7 +46,7 @@ index aa8386c..62d9a50 100644
          assert_Ns(VarArr.size() >= 2,
                    "A table constraint must refer at least to two variables");
          for (NsDeque<NsDeque<NsInt>>::const_iterator tuple = table.begin();
-@@ -672,14 +676,8 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
+@@ -672,14 +659,8 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
  
  void Ns_ConstrTable::ArcConsSupports(void)
  {
@@ -38,7 +62,7 @@ index aa8386c..62d9a50 100644
          // Iterate through the tuples of supporting values
          for (NsDeque<NsDeque<NsInt>>::const_iterator tuple = table.begin();
               tuple != table.end(); ++tuple) {
-@@ -689,17 +687,20 @@ void Ns_ConstrTable::ArcConsSupports(void)
+@@ -689,17 +670,20 @@ void Ns_ConstrTable::ArcConsSupports(void)
                                  break; // tuple is not supporting
                  if (i == tuple->size()) {
                          // This is a support tuple!
