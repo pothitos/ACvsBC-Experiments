@@ -4,7 +4,7 @@ set -ev
 # Bounds Consistency
 cd ../naxos/
 git reset --hard
-git apply ../XCSP3/patches/bounds-oriented-consistency.patch
+git apply ../XCSP3/patches/bounds-consistency.patch
 # Compile
 cd apps/XCSP3/
 cmake .
@@ -26,8 +26,8 @@ mv naxos-xcsp3 naxos-xcsp3.BC
 # Arc Consistency
 cd -
 git reset --hard
-git apply ../XCSP3/patches/value-oriented-propagation.patch
-git apply ../XCSP3/patches/value-oriented-consistency.patch
+git apply ../XCSP3/patches/arc-consistency-propagation.patch
+git apply ../XCSP3/patches/arc-consistency.patch
 # Compile
 cd -
 cmake .
