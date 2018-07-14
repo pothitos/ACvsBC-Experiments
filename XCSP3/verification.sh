@@ -6,11 +6,20 @@ cd ../naxos/
 git reset --hard
 # Enforce plain Bounds Consistency
 git apply ../XCSP3/patches/bounds-oriented-consistency.patch
-# Patch solver to print CSP parameters
-git apply ../XCSP3/patches/print-parameters.patch
 
 # Compile XCSP3 mini-parser
 cd apps/XCSP3/
+cmake .
+make -j naxos-xcsp3
+if [ "$CONTINUOUS_INTEGRATION" = "true" ]
+then
+    ctest -V
+    cd -
+fi
+
+# Patch solver to print CSP parameters
+git apply ../XCSP3/patches/print-parameters.patch
+cd -
 cmake .
 make -j naxos-xcsp3
 mv naxos-xcsp3 naxos-xcsp3.BC
