@@ -1,3 +1,27 @@
+diff --git a/apps/XCSP3/verification/CheckerFastInstances.txt b/apps/XCSP3/verification/CheckerFastInstances.txt
+index e6fa2e9..3aae691 100644
+--- a/apps/XCSP3/verification/CheckerFastInstances.txt
++++ b/apps/XCSP3/verification/CheckerFastInstances.txt
+@@ -6,7 +6,6 @@ verification/XCSP3-Java-Tools/instancesTest/Knapsack-30-100-00.xml
+ verification/XCSP3-Java-Tools/instancesTest/Langford-3-10.xml
+ verification/XCSP3-Java-Tools/instancesTest/LowAutocorrelation-015.xml
+ verification/XCSP3-Java-Tools/instancesTest/MagicSquare-4-table.xml
+-verification/XCSP3-Java-Tools/instancesTest/MagicSquare-6-sum.xml
+ verification/XCSP3-Java-Tools/instancesTest/MultiKnapsack-1-01.xml
+ verification/XCSP3-Java-Tools/instancesTest/MultiKnapsack-1-0_X2.xml
+ verification/XCSP3-Java-Tools/instancesTest/Nonogram-001-table.xml
+diff --git a/apps/XCSP3/verification/CheckerSlowInstances.txt b/apps/XCSP3/verification/CheckerSlowInstances.txt
+index ec8962e..83dbfc6 100644
+--- a/apps/XCSP3/verification/CheckerSlowInstances.txt
++++ b/apps/XCSP3/verification/CheckerSlowInstances.txt
+@@ -2,6 +2,7 @@ verification/XCSP3-Java-Tools/instancesTest/driverlogw-09.xml
+ verification/XCSP3-Java-Tools/instancesTest/GracefulGraph-K02-P04.xml
+ verification/XCSP3-Java-Tools/instancesTest/GraphColoring-3-fullins-4.xml
+ verification/XCSP3-Java-Tools/instancesTest/LangfordBin-08.xml
++verification/XCSP3-Java-Tools/instancesTest/MagicSquare-6-sum.xml
+ verification/XCSP3-Java-Tools/instancesTest/MarketSplit-01.xml
+ verification/XCSP3-Java-Tools/instancesTest/QuadraticAssignment-bur26a.xml
+ verification/XCSP3-Java-Tools/instancesTest/TravellingSalesman-20-30-00.xml
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
 index aa8386c..1caf48f 100644
 --- a/core/array_constraints.cpp
