@@ -13,8 +13,8 @@ make -j naxos-xcsp3
 if [ "$CONTINUOUS_INTEGRATION" = "true" ]
 then
     ctest -V
-    cd -
 fi
+cd -
 # Patch solver to print CSP parameters
 git apply ../XCSP3/patches/print-parameters.patch
 # Compile
