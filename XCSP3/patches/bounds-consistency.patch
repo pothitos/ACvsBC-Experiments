@@ -23,7 +23,7 @@ index ec8962e..83dbfc6 100644
  verification/XCSP3-Java-Tools/instancesTest/QuadraticAssignment-bur26a.xml
  verification/XCSP3-Java-Tools/instancesTest/TravellingSalesman-20-30-00.xml
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index aa8386c..1caf48f 100644
+index aa8386c..25d41fa 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -250,7 +250,8 @@ void allDiffArcCons(NsIntVarArray* VarArr,
@@ -60,3 +60,16 @@ index aa8386c..1caf48f 100644
          // Classic ArcCons //
          NsQueue<const NsIntVar*> newBoundVars;
          for (X = VarArr->begin(); X != VarArr->end(); ++X) {
+@@ -731,8 +715,10 @@ void Ns_ConstrTable::ArcConsConflicts(void)
+                 if (i == tuple->size()) {
+                         // All the VarArr values matched the tuple!
+                         // Removing the conflicting value
+-                        VarArr[lastUnboundIndex].remove(
+-                            (*tuple)[lastUnboundIndex]);
++                        NsIntVar& Var = VarArr[lastUnboundIndex];
++                        NsInt val = (*tuple)[lastUnboundIndex];
++                        if (val == Var.min() || val == Var.max())
++                                Var.removeSingle(val, constraint);
+                 }
+         }
+ }
