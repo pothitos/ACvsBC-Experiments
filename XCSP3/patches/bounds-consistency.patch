@@ -23,7 +23,7 @@ index ec8962e..83dbfc6 100644
  verification/XCSP3-Java-Tools/instancesTest/QuadraticAssignment-bur26a.xml
  verification/XCSP3-Java-Tools/instancesTest/TravellingSalesman-20-30-00.xml
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index aa8386c..25d41fa 100644
+index 68c5d70..da41290 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -250,7 +250,8 @@ void allDiffArcCons(NsIntVarArray* VarArr,
@@ -64,12 +64,12 @@ index aa8386c..25d41fa 100644
                  if (i == tuple->size()) {
                          // All the VarArr values matched the tuple!
                          // Removing the conflicting value
--                        VarArr[lastUnboundIndex].remove(
--                            (*tuple)[lastUnboundIndex]);
+-                        VarArr[lastUnboundIndex].removeSingle(
+-                            (*tuple)[lastUnboundIndex], this);
 +                        NsIntVar& Var = VarArr[lastUnboundIndex];
 +                        NsInt val = (*tuple)[lastUnboundIndex];
 +                        if (val == Var.min() || val == Var.max())
-+                                Var.removeSingle(val, constraint);
++                                Var.removeSingle(val, this);
                  }
          }
  }
