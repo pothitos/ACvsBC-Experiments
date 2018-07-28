@@ -4,6 +4,7 @@ set -ev
 # Bounds Consistency
 cd ../naxos/
 git reset --hard
+git apply ../XCSP3/patches/binarize-sum.patch
 git apply ../XCSP3/patches/bounds-consistency.patch
 # Compile
 cd apps/XCSP3/
@@ -26,6 +27,7 @@ mv naxos-xcsp3 naxos-xcsp3.BC
 # Arc Consistency
 cd -
 git reset --hard
+git apply ../XCSP3/patches/binarize-sum.patch
 git apply ../XCSP3/patches/arc-consistency-propagation.patch
 git apply ../XCSP3/patches/arc-consistency.patch
 # Compile

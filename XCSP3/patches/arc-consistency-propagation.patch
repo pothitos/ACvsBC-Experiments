@@ -29,7 +29,7 @@ index 351d8dc..1037ae7 100644
          }
          return true;
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
-index 7635e12..3fdec3e 100644
+index 183bc58..32d8baa 100644
 --- a/core/naxos-mini.h
 +++ b/core/naxos-mini.h
 @@ -1264,7 +1264,15 @@ class Ns_Constraint {
@@ -49,7 +49,7 @@ index 7635e12..3fdec3e 100644
          };
  
          /// Description of the type of revision function (LocalArcCons) for the
-@@ -3896,6 +3904,9 @@ class Ns_QueueItem {
+@@ -3893,6 +3901,9 @@ class Ns_QueueItem {
          /// Used to record a modification of the bounds (if any)
          RemovedBoundRecord_t removedBoundRec;
  
@@ -59,7 +59,7 @@ index 7635e12..3fdec3e 100644
          /// An array that records the values removed from the domain of varFired
          NsDeque<RemovedValueRecord_t> removedValues;
  
-@@ -3917,6 +3928,8 @@ class Ns_QueueItem {
+@@ -3914,6 +3925,8 @@ class Ns_QueueItem {
  
          void boundChangedBy(const Ns_Constraint* constr);
  

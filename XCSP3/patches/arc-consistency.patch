@@ -92,7 +92,7 @@ index 68c5d70..1f2b08d 100644
  }
  
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
-index 3fdec3e..a3abb15 100644
+index 32d8baa..4b1812b 100644
 --- a/core/naxos-mini.h
 +++ b/core/naxos-mini.h
 @@ -1430,7 +1430,7 @@ class Ns_ConstrXeqYtimesC : public Ns_Constraint {

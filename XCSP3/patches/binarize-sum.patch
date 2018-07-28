@@ -1,0 +1,47 @@
+diff --git a/core/expressions.cpp b/core/expressions.cpp
+index 2078a70..d55bf6b 100644
+--- a/core/expressions.cpp
++++ b/core/expressions.cpp
+@@ -530,6 +530,26 @@ NsIntVar& Ns_ExprMax::post(void) const
+         return *VarX;
+ }
+ 
++Ns_ExprYplusZ naxos::NsSum(NsIntVarArray& Arr)
++{
++        NsIntVar* vPreviousSum = &Arr[0];
++        NsIntVar* vCurrentSum;
++        NsIndex i;
++        for (i = 1; i < Arr.size() - 1; ++i) {
++                vCurrentSum = new NsIntVar();
++                *vCurrentSum = *vPreviousSum + Arr[i];
++                vCurrentSum->manager().recordIntermediateVar(vCurrentSum);
++                vPreviousSum = vCurrentSum;
++        }
++        if (Arr.size() == 1) {
++                NsIntVar* vZero = new NsIntVar(vPreviousSum->manager(), 0, 0);
++                vZero->manager().recordIntermediateVar(vZero);
++                return *vPreviousSum + *vZero;
++        } else {
++                return *vPreviousSum + Arr[i];
++        }
++}
++
+ void Ns_ExprSum::post(NsIntVar& VarX) const
+ {
+         assert_Ns(!VarArr.empty(), "Cannot get the sum of an empty array");
+diff --git a/core/naxos-mini.h b/core/naxos-mini.h
+index 7635e12..183bc58 100644
+--- a/core/naxos-mini.h
++++ b/core/naxos-mini.h
+@@ -2970,10 +2970,7 @@ class Ns_ExprSum : public Ns_Expression {
+         virtual NsIntVar& post(void) const;
+ };
+ 
+-inline Ns_ExprSum NsSum(NsIntVarArray& Arr)
+-{
+-        return Ns_ExprSum(Arr);
+-}
++Ns_ExprYplusZ NsSum(NsIntVarArray& Arr);
+ 
+ inline Ns_ExprSum NsSum(NsIntVarArray& Arr, const NsIndex start,
+                         const NsIndex length)
