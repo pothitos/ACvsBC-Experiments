@@ -122,7 +122,7 @@ index 32d8baa..4b1812b 100644
                            "Ns_ConstrXeqY::Ns_ConstrXeqY: All the variables of "
                            "a constraint must belong to the same "
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 076ad53..8002e84 100644
+index 076ad53..8111502 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
 @@ -528,55 +528,58 @@ void Ns_ConstrXeqCminusY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
@@ -228,7 +228,7 @@ index 076ad53..8002e84 100644
  } // end namespace
  
 +/// Projects the set of values S to the domain of V
-+void set_to_domain(std::set<NsInt>& S, naxos::NsIntVar& V,
++void set_to_domain(set<NsInt>& S, NsIntVar& V,
 +                   const Ns_Constraint* constraint, bool& modification)
 +{
 +        NsInt previous_val = NsMINUS_INF;

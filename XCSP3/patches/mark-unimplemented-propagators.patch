@@ -87,7 +87,7 @@ index adcd3a3..40ca1fb 100644
          NsIntVar::const_iterator val;
          for (i = 0; i < VArrInv.size(); ++i) {
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 8002e84..c7313c8 100644
+index 8111502..6184783 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
 @@ -13,6 +13,7 @@ using namespace std;
@@ -274,7 +274,7 @@ index 8002e84..c7313c8 100644
          bool changed_summinmax = true;
          for (;;) {
                  do {
-@@ -1174,6 +1197,7 @@ void set_to_domain(std::set<NsInt>& S, naxos::NsIntVar& V,
+@@ -1174,6 +1197,7 @@ void set_to_domain(set<NsInt>& S, NsIntVar& V,
  
  void Ns_ConstrXeqYtimesZ::ArcCons(void)
  {
