@@ -1,16 +1,8 @@
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index 68c5d70..1f2b08d 100644
+index 68c5d70..22f563f 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
-@@ -7,6 +7,7 @@
- #include "naxos-mini.h"
- #include <algorithm>
- #include <cstdlib>
-+#include <set>
- 
- using namespace naxos;
- using namespace std;
-@@ -264,23 +265,6 @@ void allDiffArcCons(NsIntVarArray* VarArr,
+@@ -264,23 +264,6 @@ void allDiffArcCons(NsIntVarArray* VarArr,
  void Ns_ConstrAllDiff::ArcCons(void)
  {
          NsIntVarArray::iterator X, Y;
@@ -34,7 +26,7 @@ index 68c5d70..1f2b08d 100644
          // Classic ArcCons //
          NsQueue<const NsIntVar*> newBoundVars;
          for (X = VarArr->begin(); X != VarArr->end(); ++X) {
-@@ -650,7 +634,10 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
+@@ -650,7 +633,10 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
      table(table_init),
      isSupportsTable(isSupportsTable_init)
  {
@@ -46,7 +38,7 @@ index 68c5d70..1f2b08d 100644
          assert_Ns(VarArr.size() >= 2,
                    "A table constraint must refer at least to two variables");
          for (NsDeque<NsDeque<NsInt>>::const_iterator tuple = table.begin();
-@@ -672,14 +659,8 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
+@@ -672,14 +658,8 @@ Ns_ConstrTable::Ns_ConstrTable(NsIntVarArray& VarArr_init,
  
  void Ns_ConstrTable::ArcConsSupports(void)
  {
@@ -62,7 +54,7 @@ index 68c5d70..1f2b08d 100644
          // Iterate through the tuples of supporting values
          for (NsDeque<NsDeque<NsInt>>::const_iterator tuple = table.begin();
               tuple != table.end(); ++tuple) {
-@@ -689,17 +670,20 @@ void Ns_ConstrTable::ArcConsSupports(void)
+@@ -689,18 +669,13 @@ void Ns_ConstrTable::ArcConsSupports(void)
                                  break; // tuple is not supporting
                  if (i == tuple->size()) {
                          // This is a support tuple!
@@ -76,21 +68,36 @@ index 68c5d70..1f2b08d 100644
                  }
          }
 -        // Update the supported variables' bounds
-+        // Update the supported variables' values
-         for (i = 0; i < VarArr.size(); ++i) {
+-        for (i = 0; i < VarArr.size(); ++i) {
 -                VarArr[i].removeRange(NsMINUS_INF, VarArrMin[i] - 1, this);
 -                VarArr[i].removeRange(VarArrMax[i] + 1, NsPLUS_INF, this);
-+                NsInt previous_val = NsMINUS_INF;
-+                for (set<NsInt>::const_iterator val =
-+                         VarArrSupportValues[i].begin();
-+                     val != VarArrSupportValues[i].end(); ++val) {
-+                        VarArr[i].removeRange(previous_val + 1, *val - 1, this);
-+                        previous_val = *val;
-+                }
-+                VarArr[i].removeRange(previous_val + 1, NsPLUS_INF, this);
-         }
+-        }
++        // Update the supported variables' values
++        for (i = 0; i < VarArr.size(); ++i)
++                set_to_domain(VarArrSupportValues[i], VarArr[i], this);
  }
  
+ void Ns_ConstrTable::ArcConsConflicts(void)
+diff --git a/core/internal.h b/core/internal.h
+index 9b85f73..05bea6c 100644
+--- a/core/internal.h
++++ b/core/internal.h
+@@ -8,6 +8,7 @@
+ #define Ns_INTERNAL_H
+ 
+ #include "naxos-mini.h"
++#include <set>
+ 
+ bool intersectionEmpty(const naxos::NsIntVar* VarY,
+                        const naxos::NsIntVar* VarZ);
+@@ -44,4 +45,7 @@ void array_VarArr_elements_min_max(const naxos::NsIntVarArray& VarArr,
+ void update_min_max(const naxos::NsInt candidate, naxos::NsInt& min,
+                     naxos::NsInt& max);
+ 
++void set_to_domain(std::set<naxos::NsInt>& S, naxos::NsIntVar& V,
++                   const naxos::Ns_Constraint* constraint);
++
+ #endif // Ns_INTERNAL_H
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
 index 32d8baa..4b1812b 100644
 --- a/core/naxos-mini.h
@@ -114,7 +121,7 @@ index 32d8baa..4b1812b 100644
                            "Ns_ConstrXeqY::Ns_ConstrXeqY: All the variables of "
                            "a constraint must belong to the same "
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 076ad53..58b48aa 100644
+index 076ad53..76f908c 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
 @@ -528,55 +528,58 @@ void Ns_ConstrXeqCminusY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
@@ -215,3 +222,23 @@ index 076ad53..58b48aa 100644
  }
  
  void Ns_ConstrXeqYdivC::ArcCons(void)
+@@ -1155,6 +1158,19 @@ void product_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
+ 
+ } // end namespace
+ 
++/// Projects the set of values S to the domain of V
++void set_to_domain(std::set<NsInt>& S, naxos::NsIntVar& V,
++                   const Ns_Constraint* constraint)
++{
++        NsInt previous_val = NsMINUS_INF;
++        for (set<NsInt>::const_iterator val = S.begin(); val != S.end();
++             ++val) {
++                V.removeRange(previous_val + 1, *val - 1, constraint);
++                previous_val = *val;
++        }
++        V.removeRange(previous_val + 1, NsPLUS_INF, constraint);
++}
++
+ void Ns_ConstrXeqYtimesZ::ArcCons(void)
+ {
+         NsInt min, max;
