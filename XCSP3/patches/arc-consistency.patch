@@ -80,7 +80,7 @@ index 68c5d70..54e942d 100644
  
  void Ns_ConstrTable::ArcConsConflicts(void)
 diff --git a/core/internal.h b/core/internal.h
-index 9b85f73..c10de23 100644
+index 9b85f73..3a03136 100644
 --- a/core/internal.h
 +++ b/core/internal.h
 @@ -8,6 +8,7 @@
@@ -95,12 +95,12 @@ index 9b85f73..c10de23 100644
  void update_min_max(const naxos::NsInt candidate, naxos::NsInt& min,
                      naxos::NsInt& max);
  
-+void set_to_domain(std::set<naxos::NsInt>& S, naxos::NsIntVar& V,
++void set_to_domain(const std::set<naxos::NsInt>& S, naxos::NsIntVar& V,
 +                   const naxos::Ns_Constraint* constraint, bool& modification);
 +
  #endif // Ns_INTERNAL_H
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
-index 32d8baa..4b1812b 100644
+index 32d8baa..8a08035 100644
 --- a/core/naxos-mini.h
 +++ b/core/naxos-mini.h
 @@ -1430,7 +1430,7 @@ class Ns_ConstrXeqYtimesC : public Ns_Constraint {
@@ -112,6 +112,15 @@ index 32d8baa..4b1812b 100644
                  assert_Ns(&VarX->manager() == &VarY->manager(),
                            "Ns_ConstrXeqYtimesC::Ns_ConstrXeqYtimesC: All the "
                            "variables of a constraint must belong to the same "
+@@ -1465,7 +1465,7 @@ class Ns_ConstrXeqYplusZ : public Ns_Constraint {
+         Ns_ConstrXeqYplusZ(NsIntVar* X, NsIntVar* Y, NsIntVar* Z)
+           : VarX(X), VarY(Y), VarZ(Z)
+         {
+-                revisionType = BIDIRECTIONAL_CONSISTENCY;
++                revisionType = BIDIRECTIONAL_ARC_CONSISTENCY;
+                 assert_Ns(&VarX->manager() == &VarY->manager() &&
+                               &VarY->manager() == &VarZ->manager(),
+                           "Ns_ConstrXeqYplusZ::Ns_ConstrXeqYplusZ: All the "
 @@ -2210,7 +2210,7 @@ class Ns_ConstrXeqY : public Ns_Constraint {
      public:
          Ns_ConstrXeqY(NsIntVar* X, NsIntVar* Y) : VarX(X), VarY(Y)
@@ -122,7 +131,7 @@ index 32d8baa..4b1812b 100644
                            "Ns_ConstrXeqY::Ns_ConstrXeqY: All the variables of "
                            "a constraint must belong to the same "
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 076ad53..c1b9867 100644
+index 076ad53..4b92297 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
 @@ -528,55 +528,58 @@ void Ns_ConstrXeqCminusY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
@@ -223,13 +232,13 @@ index 076ad53..c1b9867 100644
  }
  
  void Ns_ConstrXeqYdivC::ArcCons(void)
-@@ -1046,6 +1049,20 @@ void Ns_ConstrXorY::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -1046,60 +1049,58 @@ void Ns_ConstrXorY::LocalArcCons(Ns_QueueItem& Qitem)
          }
  }
  
 +/// Projects the set of values S to the domain of V
-+void set_to_domain(set<NsInt>& S, NsIntVar& V, const Ns_Constraint* constraint,
-+                   bool& modification)
++void set_to_domain(const set<NsInt>& S, NsIntVar& V,
++                   const Ns_Constraint* constraint, bool& modification)
 +{
 +        NsInt previous_val = NsMINUS_INF;
 +        for (set<NsInt>::const_iterator val = S.begin(); val != S.end();
@@ -241,6 +250,95 @@ index 076ad53..c1b9867 100644
 +        V.removeRange(previous_val + 1, NsPLUS_INF, constraint, modification);
 +}
 +
++namespace {
++
++void collect_sum_values(set<NsInt>& S, const NsIntVar& Y, const NsIntVar& Z)
++{
++        S.clear();
++        for (NsIntVar::const_iterator y = Y.begin(); y != Y.end(); ++y)
++                for (NsIntVar::const_iterator z = Z.begin(); z != Z.end(); ++z)
++                        S.insert(*y + *z);
++}
++
++void collect_difference_values(set<NsInt>& S, const NsIntVar& X,
++                               const NsIntVar& Y)
++{
++        S.clear();
++        for (NsIntVar::const_iterator x = X.begin(); x != X.end(); ++x)
++                for (NsIntVar::const_iterator y = Y.begin(); y != Y.end(); ++y)
++                        S.insert(*x - *y);
++}
++
++} // end namespace
++
  // bounds-consistency only
  void Ns_ConstrXeqYplusZ::ArcCons(void)
  {
+-        bool changed_summinmax = true;
+-        for (;;) {
+-                do {
+-                        if (!VarX->removeRange(NsMINUS_INF,
+-                                               VarY->min() + VarZ->min() - 1,
+-                                               this))
+-                                return;
+-                        if (VarY->min() + VarZ->max() < VarX->min()) {
+-                                if (!VarY->removeRange(
+-                                        NsMINUS_INF,
+-                                        -VarZ->max() + VarX->min() - 1, this))
+-                                        return;
+-                                changed_summinmax = true;
+-                        }
+-                        if (VarZ->min() + VarY->max() < VarX->min()) {
+-                                if (!VarZ->removeRange(
+-                                        NsMINUS_INF,
+-                                        -VarY->max() + VarX->min() - 1, this))
+-                                        return;
+-                                changed_summinmax = true;
+-                        }
+-                } while (VarX->min() < VarY->min() + VarZ->min());
+-                // Initially 'changed_summinmax' was intentionally set true, in
+-                // order the following 'if' statement to be ignored, the first
+-                // time it is executed.
+-                if (!changed_summinmax)
+-                        break;
+-                changed_summinmax = false;
+-                do {
+-                        if (!VarX->removeRange(VarY->max() + VarZ->max() + 1,
+-                                               NsPLUS_INF, this))
+-                                return;
+-                        if (VarY->max() + VarZ->min() > VarX->max()) {
+-                                if (!VarY->removeRange(-VarZ->min() +
+-                                                           VarX->max() + 1,
+-                                                       NsPLUS_INF, this))
+-                                        return;
+-                                changed_summinmax = true;
+-                        }
+-                        if (VarZ->max() + VarY->min() > VarX->max()) {
+-                                if (!VarZ->removeRange(-VarY->min() +
+-                                                           VarX->max() + 1,
+-                                                       NsPLUS_INF, this))
+-                                        return;
+-                                changed_summinmax = true;
+-                        }
+-                } while (VarX->max() > VarY->max() + VarZ->max());
+-                if (!changed_summinmax)
+-                        break;
+-                changed_summinmax = false;
+-        }
++        bool modification;
++        do {
++                set<NsInt> S;
++                // S = {x | x = y + z, y in D_Y, z in D_Z}
++                collect_sum_values(S, *VarY, *VarZ);
++                set_to_domain(S, *VarX, this, modification);
++                modification = false;
++                // S = {y | x = y + z, x in D_X, z in D_Z}
++                collect_difference_values(S, *VarX, *VarZ);
++                set_to_domain(S, *VarY, this, modification);
++                // S = {z | x = y + z, x in D_X, y in D_Y}
++                collect_difference_values(S, *VarX, *VarY);
++                set_to_domain(S, *VarZ, this, modification);
++        } while (modification);
+ }
+ 
+ void Ns_ConstrXeqYplusZ::LocalArcCons(Ns_QueueItem& /*Qitem*/)
