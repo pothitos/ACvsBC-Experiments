@@ -87,26 +87,10 @@ index adcd3a3..40ca1fb 100644
          NsIntVar::const_iterator val;
          for (i = 0; i < VArrInv.size(); ++i) {
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 4b92297..ed4f648 100644
+index 4b92297..4d54e71 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
-@@ -13,6 +13,7 @@ using namespace std;
- 
- void Ns_ConstrXlessthanY::ArcCons(void)
- {
-+        throw NsException("Ns_ConstrXlessthanY: Unimplemented consistency level");
-         VarX->removeRange(VarY->max(), NsPLUS_INF, this);
-         VarY->removeRange(NsMINUS_INF, VarX->min(), this);
- }
-@@ -31,6 +32,7 @@ void Ns_ConstrXlessthanY::LocalArcCons(Ns_QueueItem& Qitem)
- 
- void Ns_ConstrXlesseqthanY::ArcCons(void)
- {
-+        throw NsException("Ns_ConstrXlesseqthanY: Unimplemented consistency level");
-         VarX->removeRange(VarY->max() + 1, NsPLUS_INF, this);
-         VarY->removeRange(NsMINUS_INF, VarX->min() - 1, this);
- }
-@@ -59,6 +61,7 @@ inline void makeBoolean(NsIntVar* VarX, const Ns_Constraint* constraint)
+@@ -59,6 +59,7 @@ inline void makeBoolean(NsIntVar* VarX, const Ns_Constraint* constraint)
  
  void Ns_ConstrMetaXeqYlessthanC::ArcCons(void)
  {
@@ -114,7 +98,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if (VarY->max() < C)
                  VarX->removeSingle(0, this);
-@@ -103,6 +106,7 @@ void Ns_ConstrMetaXeqYlessthanC::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -103,6 +104,7 @@ void Ns_ConstrMetaXeqYlessthanC::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrMetaXeqYlessthanZ::ArcCons(void)
  {
@@ -122,7 +106,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if (VarY->max() < VarZ->min())
                  VarX->removeSingle(0, this);
-@@ -181,6 +185,7 @@ void Ns_ConstrMetaXeqYlessthanZ::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -181,6 +183,7 @@ void Ns_ConstrMetaXeqYlessthanZ::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrMetaXeqYlesseqthanC::ArcCons(void)
  {
@@ -130,7 +114,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if (VarY->max() <= C)
                  VarX->removeSingle(0, this);
-@@ -225,6 +230,7 @@ void Ns_ConstrMetaXeqYlesseqthanC::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -225,6 +228,7 @@ void Ns_ConstrMetaXeqYlesseqthanC::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrMetaXeqYlesseqthanZ::ArcCons(void)
  {
@@ -138,7 +122,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if (VarY->max() <= VarZ->min())
                  VarX->removeSingle(0, this);
-@@ -308,6 +314,7 @@ void Ns_ConstrMetaXeqYlesseqthanZ::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -308,6 +312,7 @@ void Ns_ConstrMetaXeqYlesseqthanZ::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrMetaXeqYgreaterthanC::ArcCons(void)
  {
@@ -146,7 +130,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if (VarY->min() > C)
                  VarX->removeSingle(0, this);
-@@ -352,6 +359,7 @@ void Ns_ConstrMetaXeqYgreaterthanC::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -352,6 +357,7 @@ void Ns_ConstrMetaXeqYgreaterthanC::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrMetaXeqYgreatereqthanC::ArcCons(void)
  {
@@ -154,7 +138,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if (VarY->min() >= C)
                  VarX->removeSingle(0, this);
-@@ -396,6 +404,7 @@ void Ns_ConstrMetaXeqYgreatereqthanC::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -396,6 +402,7 @@ void Ns_ConstrMetaXeqYgreatereqthanC::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrMetaXeqYeqC::ArcCons(void)
  {
@@ -162,7 +146,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if (VarY->min() == C && VarY->max() == C)
                  VarX->removeSingle(0, this);
-@@ -441,6 +450,7 @@ void Ns_ConstrMetaXeqYeqC::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -441,6 +448,7 @@ void Ns_ConstrMetaXeqYeqC::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrMetaXeqYneqC::ArcCons(void)
  {
@@ -170,7 +154,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if (!VarY->contains(C))
                  VarX->removeSingle(0, this);
-@@ -486,6 +496,7 @@ void Ns_ConstrMetaXeqYneqC::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -486,6 +494,7 @@ void Ns_ConstrMetaXeqYneqC::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXeqYplusC::ArcCons(void)
  {
@@ -178,7 +162,7 @@ index 4b92297..ed4f648 100644
          bool modification;
          do {
                  modification = false;
-@@ -507,6 +518,7 @@ void Ns_ConstrXeqYplusC::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+@@ -507,6 +516,7 @@ void Ns_ConstrXeqYplusC::LocalArcCons(Ns_QueueItem& /*Qitem*/)
  
  void Ns_ConstrXeqCminusY::ArcCons(void)
  {
@@ -186,7 +170,7 @@ index 4b92297..ed4f648 100644
          bool modification;
          do {
                  modification = false;
-@@ -584,6 +596,7 @@ void Ns_ConstrXeqY::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -584,6 +594,7 @@ void Ns_ConstrXeqY::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXeqYdivC::ArcCons(void)
  {
@@ -194,7 +178,7 @@ index 4b92297..ed4f648 100644
          bool modification;
          do {
                  modification = false;
-@@ -616,6 +629,7 @@ void Ns_ConstrXeqYdivC::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+@@ -616,6 +627,7 @@ void Ns_ConstrXeqYdivC::LocalArcCons(Ns_QueueItem& /*Qitem*/)
  
  void Ns_ConstrXeqCdivY::ArcCons(void)
  {
@@ -202,7 +186,7 @@ index 4b92297..ed4f648 100644
          bool modification;
          do {
                  modification = false;
-@@ -708,6 +722,7 @@ void YmodC_min_max(const NsIntVar* VarY, const NsInt C, NsInt& min, NsInt& max)
+@@ -708,6 +720,7 @@ void YmodC_min_max(const NsIntVar* VarY, const NsInt C, NsInt& min, NsInt& max)
  
  void Ns_ConstrXeqYmodC::ArcCons(void)
  {
@@ -210,7 +194,7 @@ index 4b92297..ed4f648 100644
          NsInt min, max;
          bool modification;
          do {
-@@ -762,6 +777,7 @@ void CmodY_min_max(const NsInt C, NsIntVar* VarY, NsInt& min, NsInt& max)
+@@ -762,6 +775,7 @@ void CmodY_min_max(const NsInt C, NsIntVar* VarY, NsInt& min, NsInt& max)
  
  void Ns_ConstrXeqCmodY::ArcCons(void)
  {
@@ -218,7 +202,7 @@ index 4b92297..ed4f648 100644
          NsInt min, max;
          bool modification;
          do {
-@@ -793,6 +809,7 @@ void Ns_ConstrXeqCmodY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+@@ -793,6 +807,7 @@ void Ns_ConstrXeqCmodY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
  
  void Ns_ConstrXneqY::ArcCons(void)
  {
@@ -226,7 +210,7 @@ index 4b92297..ed4f648 100644
          if (VarY->isBound())
                  VarX->removeSingle(VarY->value(), this);
          if (VarX->isBound())
-@@ -814,6 +831,7 @@ void Ns_ConstrXneqY::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -814,6 +829,7 @@ void Ns_ConstrXneqY::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXeqAbsY::ArcCons(void)
  {
@@ -234,7 +218,7 @@ index 4b92297..ed4f648 100644
          bool modification;
          do {
                  modification = false;
-@@ -844,6 +862,7 @@ bool intersectionEmpty(const NsIntVar* VarY, const NsIntVar* VarZ)
+@@ -844,6 +860,7 @@ bool intersectionEmpty(const NsIntVar* VarY, const NsIntVar* VarZ)
  
  void Ns_ConstrMetaXeqYeqZ::ArcCons(void)
  {
@@ -242,7 +226,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if (VarY->max() == VarZ->min() && VarY->min() == VarZ->max())
                  VarX->removeSingle(neg, this);
-@@ -946,6 +965,7 @@ void Ns_ConstrMetaXeqYeqZ::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -946,6 +963,7 @@ void Ns_ConstrMetaXeqYeqZ::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXeqYandZ::ArcCons(void)
  {
@@ -250,7 +234,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if ((VarY->min() && VarZ->min()))
                  VarX->removeSingle(neg, this);
-@@ -988,6 +1008,7 @@ void Ns_ConstrXeqYandZ::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -988,6 +1006,7 @@ void Ns_ConstrXeqYandZ::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXeqYorZ::ArcCons(void)
  {
@@ -258,7 +242,7 @@ index 4b92297..ed4f648 100644
          makeBoolean(VarX, this);
          if (VarY->min() + VarZ->min() != 0)
                  VarX->removeSingle(neg, this);
-@@ -1030,6 +1051,7 @@ void Ns_ConstrXeqYorZ::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -1030,6 +1049,7 @@ void Ns_ConstrXeqYorZ::LocalArcCons(Ns_QueueItem& Qitem)
  
  void Ns_ConstrXorY::ArcCons(void)
  {
@@ -266,7 +250,7 @@ index 4b92297..ed4f648 100644
          if (VarY->isBound() && VarY->value() == neg)
                  VarX->removeSingle(neg, this);
          if (VarX->isBound() && VarX->value() == neg)
-@@ -1158,6 +1180,7 @@ void product_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
+@@ -1158,6 +1178,7 @@ void product_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
  
  void Ns_ConstrXeqYtimesZ::ArcCons(void)
  {
@@ -274,7 +258,7 @@ index 4b92297..ed4f648 100644
          NsInt min, max;
          bool modification;
          do {
-@@ -1286,6 +1309,7 @@ void divisor_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
+@@ -1286,6 +1307,7 @@ void divisor_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
  
  void Ns_ConstrXeqYdivZ::ArcCons(void)
  {
@@ -282,7 +266,7 @@ index 4b92297..ed4f648 100644
          NsInt min, max;
          bool modification;
          do {
-@@ -1394,6 +1418,7 @@ void divisor_for_mod_prune_bounds(NsIntVar* VarX, NsIntVar* VarY,
+@@ -1394,6 +1416,7 @@ void divisor_for_mod_prune_bounds(NsIntVar* VarX, NsIntVar* VarY,
  
  void Ns_ConstrXeqYmodZ::ArcCons(void)
  {
