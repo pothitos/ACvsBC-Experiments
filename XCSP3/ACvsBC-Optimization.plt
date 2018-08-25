@@ -7,7 +7,7 @@ set logscale xy
 set xlabel "f(len, n, d, e)"
 set ylabel "COST_{AC} / COST_{BC}"
 
-f(len, n, d, e) = len / n
+f(len, n, d, e) = d / n
 
 plot "results/CompetitionInstancesOptimization.dat" using \
     (f($2, $3, $4, $5)):($8 / $9) notitle
