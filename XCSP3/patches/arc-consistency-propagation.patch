@@ -29,7 +29,7 @@ index 351d8dc..1037ae7 100644
          }
          return true;
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
-index 183bc58..32d8baa 100644
+index f682963..78a64e7 100644
 --- a/core/naxos-mini.h
 +++ b/core/naxos-mini.h
 @@ -1264,7 +1264,15 @@ class Ns_Constraint {

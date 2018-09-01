@@ -30,7 +30,7 @@ index 2078a70..d55bf6b 100644
  {
          assert_Ns(!VarArr.empty(), "Cannot get the sum of an empty array");
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
-index 7635e12..183bc58 100644
+index 48a0326..f682963 100644
 --- a/core/naxos-mini.h
 +++ b/core/naxos-mini.h
 @@ -2970,10 +2970,7 @@ class Ns_ExprSum : public Ns_Expression {

@@ -133,7 +133,7 @@ index 9b85f73..3a03136 100644
 +
  #endif // Ns_INTERNAL_H
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
-index 32d8baa..8a08035 100644
+index 78a64e7..0dc587e 100644
 --- a/core/naxos-mini.h
 +++ b/core/naxos-mini.h
 @@ -1430,7 +1430,7 @@ class Ns_ConstrXeqYtimesC : public Ns_Constraint {
