@@ -29,7 +29,7 @@ then
     exit 1
 fi
 
-echo "CSP\tlen\tn\td\te\tAC_Time\tBC_Time\tAC_Cost\tBC_Cost"
+echo "CSP\tlen\tn\td\td_avg\te\tAC_Time\tBC_Time\tAC_Cost\tBC_Cost"
 echo
 for INSTANCE in $(cat "$INSTANCE_FILENAMES")
 do

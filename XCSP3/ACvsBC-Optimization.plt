@@ -4,10 +4,10 @@ set border 3
 set tics nomirror
 set logscale xy
 
-set xlabel "f(len, n, d, e)"
+set xlabel "f(len, n, d, d_{AVG}, e)"
 set ylabel "COST_{AC} / COST_{BC}"
 
-f(len, n, d, e) = d / n
+f(len, n, d, d_avg, e) = d / n
 
 plot "results/CompetitionInstancesOptimization.dat" using \
-    (f($2, $3, $4, $5)):($8 / $9) notitle
+    (f($2, $3, $4, $5, $6)):($9 / $10) notitle
