@@ -15,8 +15,8 @@ if [ "$CONTINUOUS_INTEGRATION" = "true" ]
 then
     ctest -V
 fi
-cd -
 # Patch solver to print CSP parameters
+cd -
 git apply ../XCSP3/patches/print-parameters.patch
 # Compile
 cd -
