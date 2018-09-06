@@ -1,13 +1,22 @@
 #!/bin/sh
 set -ev
 
-# Bounds Consistency
+# Patch solver to print CSP parameters
 cd ../naxos/
+git apply ../XCSP3/patches/print-parameters.patch
+# Compile
+cd apps/XCSP3/
+cmake .
+make -j naxos-xcsp3
+mv naxos-xcsp3 naxos-xcsp3.params
+
+# Bounds Consistency
+cd -
 git reset --hard
 git apply ../XCSP3/patches/binarize-sum.patch
 git apply ../XCSP3/patches/bounds-consistency.patch
 # Compile
-cd apps/XCSP3/
+cd -
 cmake .
 make -j naxos-xcsp3
 # Test
@@ -15,13 +24,6 @@ if [ "$CONTINUOUS_INTEGRATION" = "true" ]
 then
     ctest -V
 fi
-# Patch solver to print CSP parameters
-cd -
-git apply ../XCSP3/patches/print-parameters.patch
-# Compile
-cd -
-cmake .
-make -j naxos-xcsp3
 mv naxos-xcsp3 naxos-xcsp3.BC
 
 # Arc Consistency

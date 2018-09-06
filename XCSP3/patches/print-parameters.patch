@@ -1,15 +1,29 @@
 diff --git a/apps/XCSP3/naxos-xcsp3.cpp b/apps/XCSP3/naxos-xcsp3.cpp
-index fea9799..701f71c 100644
+index fea9799..61a323a 100644
 --- a/apps/XCSP3/naxos-xcsp3.cpp
 +++ b/apps/XCSP3/naxos-xcsp3.cpp
-@@ -60,6 +60,7 @@ int main(int argc, char* argv[])
+@@ -60,6 +60,9 @@ int main(int argc, char* argv[])
                  solver = &callbacks;
                  XCSP3Core::XCSP3CoreParser parser(solver);
                  parser.parse(argv[1]);
++                solver->nextSolution();
 +                solver->printCspParameters();
++                return 0;
                  // Initialize variables for search
                  interrupted = false;
                  searching = true;
+diff --git a/apps/XCSP3/translator.cpp b/apps/XCSP3/translator.cpp
+index c8ad8c6..acc507c 100644
+--- a/apps/XCSP3/translator.cpp
++++ b/apps/XCSP3/translator.cpp
+@@ -59,7 +59,6 @@ void Xcsp3_to_Naxos::endInstance()
+                 cout << "end SAX parsing\n";
+         if (AllVars.empty())
+                 throw invalid_argument("No constrained variables defined");
+-        pm.addGoal(new NsgLabeling(AllVars));
+ }
+ 
+ void Xcsp3_to_Naxos::beginVariables()
 diff --git a/apps/XCSP3/translator.h b/apps/XCSP3/translator.h
 index 4c1529d..d26fa77 100644
 --- a/apps/XCSP3/translator.h

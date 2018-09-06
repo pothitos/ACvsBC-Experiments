@@ -35,6 +35,8 @@ for INSTANCE in $(cat "$INSTANCE_FILENAMES")
 do
     unlzma --keep $INSTANCE.lzma
 
+    ./naxos-xcsp3.params $INSTANCE > n_d_e.txt
+
     set +e  # Temporarily allow errors
     time -o AC_Time.txt -f "%e" \
         timeout --preserve-status --kill-after=1m 40m \
@@ -49,9 +51,6 @@ do
         ./naxos-xcsp3.BC $INSTANCE > $SOLUTION
     STATUS=$?
     set -e
-    head -1 $SOLUTION > n_d_e.txt
-    # Remove first line from solution
-    sed -i "1d" $SOLUTION
     validate_if_solution_exists $STATUS BC
 
     echo "$(basename $INSTANCE .xml)\t$(wc -c < $INSTANCE)\t$(cat \
