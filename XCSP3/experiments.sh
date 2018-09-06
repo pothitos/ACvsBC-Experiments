@@ -35,7 +35,8 @@ for INSTANCE in $(cat "$INSTANCE_FILENAMES")
 do
     unlzma --keep $INSTANCE.lzma
 
-    ./naxos-xcsp3.params $INSTANCE > n_d_e.txt
+    echo -n "$(basename $INSTANCE .xml)\t$(wc -c < $INSTANCE)\t"
+    echo -n "$(./naxos-xcsp3.params $INSTANCE)\t"
 
     set +e  # Temporarily allow errors
     time -o AC_Time.txt -f "%e" \
@@ -44,6 +45,7 @@ do
     STATUS=$?
     set -e
     validate_if_solution_exists $STATUS AC
+    echo -n "$(cat AC_Time.txt)\t"
 
     set +e  # Temporarily allow errors
     time -o BC_Time.txt -f "%e" \
@@ -52,10 +54,8 @@ do
     STATUS=$?
     set -e
     validate_if_solution_exists $STATUS BC
+    echo -n "$(cat BC_Time.txt)\t"
 
-    echo "$(basename $INSTANCE .xml)\t$(wc -c < $INSTANCE)\t$(cat \
-          n_d_e.txt)\t$(cat AC_Time.txt)\t$(cat BC_Time.txt)\t$(cat \
-          AC_Cost.txt)\t$(cat BC_Cost.txt)"
-    rm $INSTANCE $SOLUTION n_d_e.txt AC_Time.txt BC_Time.txt AC_Cost.txt \
-       BC_Cost.txt
+    echo "$(cat AC_Cost.txt)\t$(cat BC_Cost.txt)"
+    rm $INSTANCE $SOLUTION AC_Time.txt BC_Time.txt AC_Cost.txt BC_Cost.txt
 done
