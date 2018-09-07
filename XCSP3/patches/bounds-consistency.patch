@@ -81,3 +81,41 @@ index 68c5d70..da41290 100644
                  }
          }
  }
+diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
+index 076ad53..36a03c3 100644
+--- a/core/var_constraints.cpp
++++ b/core/var_constraints.cpp
+@@ -791,21 +791,29 @@ void Ns_ConstrXeqCmodY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+ void Ns_ConstrXneqY::ArcCons(void)
+ {
+         if (VarY->isBound())
+-                VarX->removeSingle(VarY->value(), this);
++                if (VarY->value() == VarX->min() ||
++                    VarY->value() == VarX->max())
++                        VarX->removeSingle(VarY->value(), this);
+         if (VarX->isBound())
+-                VarY->removeSingle(VarX->value(), this);
++                if (VarX->value() == VarY->min() ||
++                    VarX->value() == VarY->max())
++                        VarY->removeSingle(VarX->value(), this);
+ }
+ 
+ void Ns_ConstrXneqY::LocalArcCons(Ns_QueueItem& Qitem)
+ {
+         if (VarX == Qitem.getVarFired()) {
+                 if (VarX->isBound())
+-                        VarY->removeSingle(VarX->value(), this);
++                        if (VarX->value() == VarY->min() ||
++                            VarX->value() == VarY->max())
++                                VarY->removeSingle(VarX->value(), this);
+         } else {
+                 assert_Ns(VarY == Qitem.getVarFired(),
+                           "Ns_ConstrXneqY::LocalArcCons: Wrong getVarFired");
+                 if (VarY->isBound())
+-                        VarX->removeSingle(VarY->value(), this);
++                        if (VarY->value() == VarX->min() ||
++                            VarY->value() == VarX->max())
++                                VarX->removeSingle(VarY->value(), this);
+         }
+ }
+ 
