@@ -133,9 +133,18 @@ index 9b85f73..3a03136 100644
 +
  #endif // Ns_INTERNAL_H
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
-index e2cfb3d..b00ea09 100644
+index e2cfb3d..2bda9f0 100644
 --- a/core/naxos-mini.h
 +++ b/core/naxos-mini.h
+@@ -1365,7 +1365,7 @@ class Ns_ConstrXeqYplusC : public Ns_Constraint {
+         Ns_ConstrXeqYplusC(NsIntVar* X, NsIntVar* Y, const NsInt C_init)
+           : VarX(X), VarY(Y), C(C_init)
+         {
+-                revisionType = BIDIRECTIONAL_CONSISTENCY;
++                revisionType = VALUE_CONSISTENCY;
+                 assert_Ns(&VarX->manager() == &VarY->manager(),
+                           "Ns_ConstrXeqYplusC::Ns_ConstrXeqYplusC: All the "
+                           "variables of a constraint must belong to the same "
 @@ -1430,7 +1430,7 @@ class Ns_ConstrXeqYtimesC : public Ns_Constraint {
          Ns_ConstrXeqYtimesC(NsIntVar* X, NsIntVar* Y, const NsInt C_init)
            : VarX(X), VarY(Y), C(C_init)
@@ -164,10 +173,57 @@ index e2cfb3d..b00ea09 100644
                            "Ns_ConstrXeqY::Ns_ConstrXeqY: All the variables of "
                            "a constraint must belong to the same "
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 076ad53..4b92297 100644
+index 076ad53..ea4c1e5 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
-@@ -528,55 +528,58 @@ void Ns_ConstrXeqCminusY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+@@ -486,23 +486,32 @@ void Ns_ConstrMetaXeqYneqC::LocalArcCons(Ns_QueueItem& Qitem)
+ 
+ void Ns_ConstrXeqYplusC::ArcCons(void)
+ {
+-        bool modification;
+-        do {
+-                modification = false;
+-                VarX->removeRange(NsMINUS_INF, VarY->min() + C - 1, this,
+-                                  modification);
+-                VarX->removeRange(VarY->max() + C + 1, NsPLUS_INF, this,
+-                                  modification);
+-                VarY->removeRange(NsMINUS_INF, VarX->min() - C - 1, this,
+-                                  modification);
+-                VarY->removeRange(VarX->max() - C + 1, NsPLUS_INF, this,
+-                                  modification);
+-        } while (modification);
++        NsIntVar::const_iterator v;
++        for (v = VarX->begin(); v != VarX->end(); ++v) {
++                if (!VarY->contains(*v - C))
++                        VarX->removeSingle(*v, this);
++        }
++        for (v = VarY->begin(); v != VarY->end(); ++v) {
++                if (!VarX->contains(*v + C))
++                        VarY->removeSingle(*v, this);
++        }
+ }
+ 
+-void Ns_ConstrXeqYplusC::LocalArcCons(Ns_QueueItem& /*Qitem*/)
++void Ns_ConstrXeqYplusC::LocalArcCons(Ns_QueueItem& Qitem)
+ {
+-        ArcCons();
++        NsInt SupportVal;
++        if (VarX == Qitem.getVarFired()) {
++                SupportVal = Qitem.getW() - C;
++                if (VarY->contains(SupportVal))
++                        VarY->removeSingle(SupportVal, this);
++        } else {
++                assert_Ns(
++                    VarY == Qitem.getVarFired(),
++                    "Ns_ConstrXeqYplusC::LocalArcCons: Wrong getVarFired");
++                SupportVal = Qitem.getW() + C;
++                if (VarX->contains(SupportVal))
++                        VarX->removeSingle(SupportVal, this);
++        }
+ }
+ 
+ void Ns_ConstrXeqCminusY::ArcCons(void)
+@@ -528,55 +537,58 @@ void Ns_ConstrXeqCminusY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
  
  void Ns_ConstrXeqYtimesC::ArcCons(void)
  {
@@ -265,7 +321,7 @@ index 076ad53..4b92297 100644
  }
  
  void Ns_ConstrXeqYdivC::ArcCons(void)
-@@ -1046,60 +1049,58 @@ void Ns_ConstrXorY::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -1046,60 +1058,58 @@ void Ns_ConstrXorY::LocalArcCons(Ns_QueueItem& Qitem)
          }
  }
  
