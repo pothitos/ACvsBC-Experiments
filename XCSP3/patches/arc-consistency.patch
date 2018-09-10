@@ -133,7 +133,7 @@ index 9b85f73..3a03136 100644
 +
  #endif // Ns_INTERNAL_H
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
-index e2cfb3d..2bda9f0 100644
+index e2cfb3d..11bbdba 100644
 --- a/core/naxos-mini.h
 +++ b/core/naxos-mini.h
 @@ -1365,7 +1365,7 @@ class Ns_ConstrXeqYplusC : public Ns_Constraint {
@@ -172,8 +172,17 @@ index e2cfb3d..2bda9f0 100644
                  assert_Ns(&VarX->manager() == &VarY->manager(),
                            "Ns_ConstrXeqY::Ns_ConstrXeqY: All the variables of "
                            "a constraint must belong to the same "
+@@ -2269,7 +2269,7 @@ class Ns_ConstrXeqAbsY : public Ns_Constraint {
+     public:
+         Ns_ConstrXeqAbsY(NsIntVar* X, NsIntVar* Y) : VarX(X), VarY(Y)
+         {
+-                revisionType = BIDIRECTIONAL_CONSISTENCY;
++                revisionType = VALUE_CONSISTENCY;
+                 assert_Ns(&VarX->manager() == &VarY->manager(),
+                           "Ns_ConstrXeqAbsY::cononstrXeqAbsY: All the "
+                           "variables of a constraint must belong to the same "
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 076ad53..ea4c1e5 100644
+index 076ad53..eaeb24d 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
 @@ -486,23 +486,32 @@ void Ns_ConstrMetaXeqYneqC::LocalArcCons(Ns_QueueItem& Qitem)
@@ -321,7 +330,62 @@ index 076ad53..ea4c1e5 100644
  }
  
  void Ns_ConstrXeqYdivC::ArcCons(void)
-@@ -1046,60 +1058,58 @@ void Ns_ConstrXorY::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -811,27 +823,39 @@ void Ns_ConstrXneqY::LocalArcCons(Ns_QueueItem& Qitem)
+ 
+ void Ns_ConstrXeqAbsY::ArcCons(void)
+ {
+-        bool modification;
+-        do {
+-                modification = false;
++        VarX->removeRange(NsMINUS_INF,
++                          max(labs(max(VarY->min(), static_cast<NsInt>(0))),
++                              labs(min(static_cast<NsInt>(0), VarY->max()))) -
++                              1,
++                          this);
++        VarX->removeRange(max(labs(VarY->min()), labs(VarY->max())) + 1,
++                          NsPLUS_INF, this);
++        VarY->removeRange(NsMINUS_INF, -(VarX->max() + 1), this);
++        VarY->removeRange(+(VarX->max() + 1), NsPLUS_INF, this);
++        if (VarX->min() != 0)
++                VarY->removeRange(-(VarX->min() - 1), +(VarX->min() - 1), this);
++}
++
++void Ns_ConstrXeqAbsY::LocalArcCons(Ns_QueueItem& Qitem)
++{
++        if (VarX == Qitem.getVarFired()) {
++                VarY->removeRange(NsMINUS_INF, -(VarX->max() + 1), this);
++                VarY->removeRange(+(VarX->max() + 1), NsPLUS_INF, this);
++                if (VarX->min() != 0)
++                        VarY->removeRange(-(VarX->min() - 1),
++                                          +(VarX->min() - 1), this);
++        } else {
++                assert_Ns(VarY == Qitem.getVarFired(),
++                          "Ns_ConstrXeqAbsY::LocalArcCons: Wrong getVarFired");
+                 VarX->removeRange(
+                     NsMINUS_INF,
+                     max(labs(max(VarY->min(), static_cast<NsInt>(0))),
+                         labs(min(static_cast<NsInt>(0), VarY->max()))) -
+                         1,
+-                    this, modification);
++                    this);
+                 VarX->removeRange(max(labs(VarY->min()), labs(VarY->max())) + 1,
+-                                  NsPLUS_INF, this, modification);
+-                VarY->removeRange(NsMINUS_INF, -(VarX->max() + 1), this,
+-                                  modification);
+-                VarY->removeRange(+(VarX->max() + 1), NsPLUS_INF, this,
+-                                  modification);
+-        } while (modification);
+-}
+-
+-void Ns_ConstrXeqAbsY::LocalArcCons(Ns_QueueItem& /*Qitem*/)
+-{
+-        ArcCons();
++                                  NsPLUS_INF, this);
++        }
+ }
+ 
+ bool intersectionEmpty(const NsIntVar* VarY, const NsIntVar* VarZ)
+@@ -1046,60 +1070,58 @@ void Ns_ConstrXorY::LocalArcCons(Ns_QueueItem& Qitem)
          }
  }
  
