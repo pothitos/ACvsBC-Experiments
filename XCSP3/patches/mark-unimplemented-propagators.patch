@@ -87,7 +87,7 @@ index adcd3a3..40ca1fb 100644
          NsIntVar::const_iterator val;
          for (i = 0; i < VArrInv.size(); ++i) {
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 15570ce..c7abf4c 100644
+index 7cf12f0..d144843 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
 @@ -59,6 +59,7 @@ inline void makeBoolean(NsIntVar* VarX, const Ns_Constraint* constraint)
@@ -226,7 +226,7 @@ index 15570ce..c7abf4c 100644
          if (VarY->isBound() && VarY->value() == neg)
                  VarX->removeSingle(neg, this);
          if (VarX->isBound() && VarX->value() == neg)
-@@ -1311,6 +1328,7 @@ void divisor_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
+@@ -1310,6 +1327,7 @@ void divisor_prune_bounds(NsIntVar* VarX, NsIntVar* VarY, NsIntVar* VarZ,
  
  void Ns_ConstrXeqYdivZ::ArcCons(void)
  {
@@ -234,7 +234,7 @@ index 15570ce..c7abf4c 100644
          NsInt min, max;
          bool modification;
          do {
-@@ -1419,6 +1437,7 @@ void divisor_for_mod_prune_bounds(NsIntVar* VarX, NsIntVar* VarY,
+@@ -1418,6 +1436,7 @@ void divisor_for_mod_prune_bounds(NsIntVar* VarX, NsIntVar* VarY,
  
  void Ns_ConstrXeqYmodZ::ArcCons(void)
  {

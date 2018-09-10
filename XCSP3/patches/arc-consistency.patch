@@ -191,7 +191,7 @@ index e2cfb3d..8c36643 100644
                            "Ns_ConstrXeqAbsY::cononstrXeqAbsY: All the "
                            "variables of a constraint must belong to the same "
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
-index 076ad53..15570ce 100644
+index 076ad53..7cf12f0 100644
 --- a/core/var_constraints.cpp
 +++ b/core/var_constraints.cpp
 @@ -486,23 +486,32 @@ void Ns_ConstrMetaXeqYneqC::LocalArcCons(Ns_QueueItem& Qitem)
@@ -394,47 +394,15 @@ index 076ad53..15570ce 100644
  }
  
  bool intersectionEmpty(const NsIntVar* VarY, const NsIntVar* VarZ)
-@@ -1046,60 +1070,58 @@ void Ns_ConstrXorY::LocalArcCons(Ns_QueueItem& Qitem)
+@@ -1046,60 +1070,57 @@ void Ns_ConstrXorY::LocalArcCons(Ns_QueueItem& Qitem)
          }
  }
  
+-// bounds-consistency only
+-void Ns_ConstrXeqYplusZ::ArcCons(void)
 +/// Projects the set of values S to the domain of V
 +void set_to_domain(const set<NsInt>& S, NsIntVar& V,
 +                   const Ns_Constraint* constraint, bool& modification)
-+{
-+        NsInt previous_val = NsMINUS_INF;
-+        for (set<NsInt>::const_iterator val = S.begin(); val != S.end();
-+             ++val) {
-+                V.removeRange(previous_val + 1, *val - 1, constraint,
-+                              modification);
-+                previous_val = *val;
-+        }
-+        V.removeRange(previous_val + 1, NsPLUS_INF, constraint, modification);
-+}
-+
-+namespace {
-+
-+void collect_sum_values(set<NsInt>& S, const NsIntVar& Y, const NsIntVar& Z)
-+{
-+        S.clear();
-+        for (NsIntVar::const_iterator y = Y.begin(); y != Y.end(); ++y)
-+                for (NsIntVar::const_iterator z = Z.begin(); z != Z.end(); ++z)
-+                        S.insert(*y + *z);
-+}
-+
-+void collect_difference_values(set<NsInt>& S, const NsIntVar& X,
-+                               const NsIntVar& Y)
-+{
-+        S.clear();
-+        for (NsIntVar::const_iterator x = X.begin(); x != X.end(); ++x)
-+                for (NsIntVar::const_iterator y = Y.begin(); y != Y.end(); ++y)
-+                        S.insert(*x - *y);
-+}
-+
-+} // end namespace
-+
- // bounds-consistency only
- void Ns_ConstrXeqYplusZ::ArcCons(void)
  {
 -        bool changed_summinmax = true;
 -        for (;;) {
@@ -486,7 +454,39 @@ index 076ad53..15570ce 100644
 -                if (!changed_summinmax)
 -                        break;
 -                changed_summinmax = false;
--        }
++        NsInt previous_val = NsMINUS_INF;
++        for (set<NsInt>::const_iterator val = S.begin(); val != S.end();
++             ++val) {
++                V.removeRange(previous_val + 1, *val - 1, constraint,
++                              modification);
++                previous_val = *val;
+         }
++        V.removeRange(previous_val + 1, NsPLUS_INF, constraint, modification);
++}
++
++namespace {
++
++void collect_sum_values(set<NsInt>& S, const NsIntVar& Y, const NsIntVar& Z)
++{
++        S.clear();
++        for (NsIntVar::const_iterator y = Y.begin(); y != Y.end(); ++y)
++                for (NsIntVar::const_iterator z = Z.begin(); z != Z.end(); ++z)
++                        S.insert(*y + *z);
++}
++
++void collect_difference_values(set<NsInt>& S, const NsIntVar& X,
++                               const NsIntVar& Y)
++{
++        S.clear();
++        for (NsIntVar::const_iterator x = X.begin(); x != X.end(); ++x)
++                for (NsIntVar::const_iterator y = Y.begin(); y != Y.end(); ++y)
++                        S.insert(*x - *y);
++}
++
++} // end namespace
++
++void Ns_ConstrXeqYplusZ::ArcCons(void)
++{
 +        bool modification;
 +        do {
 +                set<NsInt> S;
@@ -504,7 +504,7 @@ index 076ad53..15570ce 100644
  }
  
  void Ns_ConstrXeqYplusZ::LocalArcCons(Ns_QueueItem& /*Qitem*/)
-@@ -1132,40 +1154,44 @@ void product_min_max(const NsIntVar* VarY, const NsIntVar* VarZ, NsInt& min,
+@@ -1132,40 +1153,44 @@ void product_min_max(const NsIntVar* VarY, const NsIntVar* VarZ, NsInt& min,
  
  namespace {
  
