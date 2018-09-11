@@ -31,7 +31,7 @@ index ec8962e..24e1dad 100644
  verification/XCSP3-Java-Tools/instancesTest/QuadraticAssignment-bur26a.xml
  verification/XCSP3-Java-Tools/instancesTest/TravellingSalesman-20-30-00.xml
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index b0849e7..06408b9 100644
+index b0849e7..076e4d8 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -250,7 +250,8 @@ void allDiffArcCons(NsIntVarArray* VarArr,
@@ -81,6 +81,39 @@ index b0849e7..06408b9 100644
                  }
          }
  }
+@@ -852,22 +838,16 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
+ {
+         if (VarIndex.isBound()) {
+                 // Keep only the common values
+-                for (NsIntVar::const_iterator val =
+-                         VarArr[VarIndex.value()].begin();
+-                     val != VarArr[VarIndex.value()].end(); ++val) {
+-                        if (!VarValue.contains(*val)) {
+-                                VarArr[VarIndex.value()].removeSingle(
+-                                    *val, constraint);
+-                                modification = true;
+-                        }
+-                }
+-                for (NsIntVar::const_iterator val = VarValue.begin();
+-                     val != VarValue.end(); ++val) {
+-                        if (!VarArr[VarIndex.value()].contains(*val)) {
+-                                VarValue.removeSingle(*val, constraint);
+-                                modification = true;
+-                        }
+-                }
++                // Adopted from Ns_ConstrXeqY:
++                VarArr[VarIndex.value()].removeRange(
++                    NsMINUS_INF, VarValue.min() - 1, constraint, modification);
++                VarArr[VarIndex.value()].removeRange(
++                    VarValue.max() + 1, NsPLUS_INF, constraint, modification);
++                VarValue.removeRange(NsMINUS_INF,
++                                     VarArr[VarIndex.value()].min() - 1,
++                                     constraint, modification);
++                VarValue.removeRange(VarArr[VarIndex.value()].max() + 1,
++                                     NsPLUS_INF, constraint, modification);
+         }
+ }
+ 
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
 index 076ad53..36a03c3 100644
 --- a/core/var_constraints.cpp
