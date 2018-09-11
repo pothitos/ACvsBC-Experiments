@@ -1,5 +1,5 @@
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index 3f66b47..0bf9cd8 100644
+index b17c770..57ae99e 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -84,6 +84,7 @@ Ns_ConstrXeqMax::Ns_ConstrXeqMax(NsIntVar* X, NsIntVarArray* VarArr_init)
@@ -42,14 +42,6 @@ index 3f66b47..0bf9cd8 100644
          if (!VarIndex->removeRange(NsMINUS_INF, -1, this) ||
              !VarIndex->removeRange(intArray.size(), NsPLUS_INF, this)) {
                  return;
-@@ -851,6 +856,7 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
- 
- void Ns_ConstrVarArrElement::ArcCons(void)
- {
-+        throw NsException("Ns_ConstrVarArrElement: Unimplemented consistency level");
-         NsInt min, max;
-         bool modification;
-         do {
 diff --git a/core/non_mini_solver_constraints.cpp b/core/non_mini_solver_constraints.cpp
 index adcd3a3..40ca1fb 100644
 --- a/core/non_mini_solver_constraints.cpp

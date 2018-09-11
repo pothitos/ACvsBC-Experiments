@@ -32,7 +32,7 @@ index ec8962e..8d46e99 100644
 -verification/XCSP3-Java-Tools/instancesTest/QuadraticAssignment-bur26a.xml
  verification/XCSP3-Java-Tools/instancesTest/TravellingSalesman-20-30-00.xml
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index b0849e7..3f66b47 100644
+index b0849e7..b17c770 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -264,23 +264,6 @@ void allDiffArcCons(NsIntVarArray* VarArr,
@@ -112,6 +112,71 @@ index b0849e7..3f66b47 100644
  }
  
  void Ns_ConstrTable::ArcConsConflicts(void)
+@@ -815,20 +791,29 @@ void array_VarArr_elements_min_max(const NsIntVarArray& VarArr,
+ 
+ namespace {
+ 
++void collect_VarArr_elements(set<NsInt>& S, const NsIntVarArray& VarArr,
++                             NsIntVar& VarIndex)
++{
++        for (NsIntVar::const_iterator i = VarIndex.begin(); i != VarIndex.end();
++             ++i) {
++                for (NsIntVar::const_iterator val = VarArr[*i].begin();
++                     val != VarArr[*i].end(); ++val)
++                        S.insert(*val);
++        }
++}
++
+ /// Checks if VarArr[i] doesn't have any value in common with VarValue
+ ///
+ /// If not, 'i' should be removed from VarIndex.
+-void index_prune_bounds(const NsIntVarArray& VarArr, NsIntVar& VarIndex,
+-                        const NsIntVar& VarValue, bool& modification,
+-                        const Ns_Constraint* constraint)
++void index_prune(const NsIntVarArray& VarArr, NsIntVar& VarIndex,
++                 const NsIntVar& VarValue, bool& modification,
++                 const Ns_Constraint* constraint)
+ {
+         for (NsIntVar::const_iterator i = VarIndex.begin(); i != VarIndex.end();
+              ++i) {
+                 if (intersectionEmpty(&VarArr[*i], &VarValue)) {
+                         VarIndex.removeSingle(*i, constraint);
+                         modification = true;
+-                } else {
+-                        break;
+                 }
+         }
+         for (NsIntVar::const_reverse_iterator i = VarIndex.rbegin();
+@@ -836,8 +821,6 @@ void index_prune_bounds(const NsIntVarArray& VarArr, NsIntVar& VarIndex,
+                 if (intersectionEmpty(&VarArr[*i], &VarValue)) {
+                         VarIndex.removeSingle(*i, constraint);
+                         modification = true;
+-                } else {
+-                        break;
+                 }
+         }
+ }
+@@ -875,15 +858,14 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
+ 
+ void Ns_ConstrVarArrElement::ArcCons(void)
+ {
+-        NsInt min, max;
+         bool modification;
+         do {
+                 modification = false;
+-                array_VarArr_elements_min_max(VarArr, VarIndex, min, max);
+-                VarValue.removeRange(NsMINUS_INF, min - 1, this);
+-                VarValue.removeRange(max + 1, NsPLUS_INF, this);
+-                index_prune_bounds(VarArr, VarIndex, VarValue, modification,
+-                                   this);
++                set<NsInt> S;
++                collect_VarArr_elements(S, VarArr, VarIndex);
++                bool foo;
++                set_to_domain(S, VarValue, this, foo);
++                index_prune(VarArr, VarIndex, VarValue, modification, this);
+                 VarArrElements_prune(VarArr, VarIndex, VarValue, modification,
+                                      this);
+         } while (modification);
 diff --git a/core/internal.h b/core/internal.h
 index 9b85f73..3a03136 100644
 --- a/core/internal.h
@@ -133,7 +198,7 @@ index 9b85f73..3a03136 100644
 +
  #endif // Ns_INTERNAL_H
 diff --git a/core/naxos-mini.h b/core/naxos-mini.h
-index e2cfb3d..8c36643 100644
+index e2cfb3d..1cf30ee 100644
 --- a/core/naxos-mini.h
 +++ b/core/naxos-mini.h
 @@ -1365,7 +1365,7 @@ class Ns_ConstrXeqYplusC : public Ns_Constraint {
@@ -190,6 +255,15 @@ index e2cfb3d..8c36643 100644
                  assert_Ns(&VarX->manager() == &VarY->manager(),
                            "Ns_ConstrXeqAbsY::cononstrXeqAbsY: All the "
                            "variables of a constraint must belong to the same "
+@@ -2466,7 +2466,7 @@ class Ns_ConstrVarArrElement : public Ns_Constraint {
+             VarIndex(VarIndex_init),
+             VarValue(VarValue_init)
+         {
+-                revisionType = BIDIRECTIONAL_CONSISTENCY;
++                revisionType = BIDIRECTIONAL_ARC_CONSISTENCY;
+                 assert_Ns(&VarIndex.manager() == &VarValue.manager(),
+                           "Ns_ConstrVarArrElement::Ns_ConstrVarArrElement: All "
+                           "the variables of a constraint must belong to the "
 diff --git a/core/var_constraints.cpp b/core/var_constraints.cpp
 index 076ad53..7cf12f0 100644
 --- a/core/var_constraints.cpp
