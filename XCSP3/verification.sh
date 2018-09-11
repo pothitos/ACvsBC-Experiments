@@ -3,6 +3,7 @@ set -ev
 
 # Patch solver to print CSP parameters
 cd ../naxos/
+git reset --hard
 git apply ../XCSP3/patches/print-parameters.patch
 # Compile
 cd apps/XCSP3/
