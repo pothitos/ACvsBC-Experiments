@@ -1,5 +1,5 @@
 diff --git a/core/array_constraints.cpp b/core/array_constraints.cpp
-index 54e942d..91d930b 100644
+index 3f66b47..0bf9cd8 100644
 --- a/core/array_constraints.cpp
 +++ b/core/array_constraints.cpp
 @@ -84,6 +84,7 @@ Ns_ConstrXeqMax::Ns_ConstrXeqMax(NsIntVar* X, NsIntVarArray* VarArr_init)
@@ -42,7 +42,7 @@ index 54e942d..91d930b 100644
          if (!VarIndex->removeRange(NsMINUS_INF, -1, this) ||
              !VarIndex->removeRange(intArray.size(), NsPLUS_INF, this)) {
                  return;
-@@ -847,6 +852,7 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
+@@ -851,6 +856,7 @@ void VarArrElements_prune(NsIntVarArray& VarArr, const NsIntVar& VarIndex,
  
  void Ns_ConstrVarArrElement::ArcCons(void)
  {
