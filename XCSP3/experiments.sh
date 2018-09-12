@@ -31,17 +31,18 @@ fi
 
 echo "CSP\tlen\tn\td\td_avg\te\tAC_Time\tBC_Time\tAC_Cost\tBC_Cost"
 echo
+INSTANCE_EXTRACTED=$(mktemp)
 for INSTANCE in $(cat "$INSTANCE_FILENAMES")
 do
-    unlzma --keep $INSTANCE.lzma
+    lzcat $INSTANCE.lzma > $INSTANCE_EXTRACTED
 
-    echo -n "$(basename $INSTANCE .xml)\t$(wc -c < $INSTANCE)\t"
-    echo -n "$(./naxos-xcsp3.params $INSTANCE)\t"
+    echo -n "$(basename $INSTANCE .xml)\t$(wc -c < $INSTANCE_EXTRACTED)\t"
+    echo -n "$(./naxos-xcsp3.params $INSTANCE_EXTRACTED)\t"
 
     set +e  # Temporarily allow errors
     time -o AC_Time.txt -f "%e" \
         timeout --preserve-status --kill-after=1m 40m \
-        ./naxos-xcsp3.AC $INSTANCE > $SOLUTION
+        ./naxos-xcsp3.AC $INSTANCE_EXTRACTED > $SOLUTION
     STATUS=$?
     set -e
     validate_if_solution_exists $STATUS AC
@@ -50,12 +51,13 @@ do
     set +e  # Temporarily allow errors
     time -o BC_Time.txt -f "%e" \
         timeout --preserve-status --kill-after=1m 40m \
-        ./naxos-xcsp3.BC $INSTANCE > $SOLUTION
+        ./naxos-xcsp3.BC $INSTANCE_EXTRACTED > $SOLUTION
     STATUS=$?
     set -e
     validate_if_solution_exists $STATUS BC
     echo -n "$(cat BC_Time.txt)\t"
 
     echo "$(cat AC_Cost.txt)\t$(cat BC_Cost.txt)"
-    rm $INSTANCE $SOLUTION AC_Time.txt BC_Time.txt AC_Cost.txt BC_Cost.txt
+    rm $SOLUTION AC_Time.txt BC_Time.txt AC_Cost.txt BC_Cost.txt
 done
+rm $INSTANCE_EXTRACTED
