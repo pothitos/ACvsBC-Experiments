@@ -39,12 +39,14 @@ fi
 
 echo "CSP\tlen\tn\td\td_avg\te\tAC_Time\tBC_Time\tAC_Cost\tBC_Cost"
 echo
-INSTANCE=$(mktemp)
-for INSTANCE_ORIG in $(cat "$INSTANCE_FILENAMES")
+for INSTANCE in $(cat "$INSTANCE_FILENAMES")
 do
-    lzcat $INSTANCE_ORIG.lzma > $INSTANCE
+    if [ ! -e $INSTANCE ]
+    then
+        unlzma --keep $INSTANCE.lzma
+    fi
 
-    echo -n "$(basename $INSTANCE_ORIG .xml)\t$(wc -c < $INSTANCE)\t"
+    echo -n "$(basename $INSTANCE .xml)\t$(wc -c < $INSTANCE)\t"
     echo -n "$(./naxos-xcsp3.params $INSTANCE)\t"
 
     set +e  # Temporarily allow errors
@@ -78,4 +80,3 @@ do
     fi
     rm -f $SOLUTION AC_Time.txt BC_Time.txt AC_Cost.txt BC_Cost.txt
 done
-rm $INSTANCE
