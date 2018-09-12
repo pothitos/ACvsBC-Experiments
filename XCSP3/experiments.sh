@@ -22,7 +22,7 @@ validate_if_solution_exists() {
     COST=$(get_solution_cost)
     if [ ! -z "$COST" ]
     then
-        if grep -q "\<maximize\>" $INSTANCE_EXTRACTED
+        if grep -q "\<maximize\>" $INSTANCE
         then
             COST=$(echo "1 / $COST" | bc -l)
         fi
@@ -39,33 +39,43 @@ fi
 
 echo "CSP\tlen\tn\td\td_avg\te\tAC_Time\tBC_Time\tAC_Cost\tBC_Cost"
 echo
-INSTANCE_EXTRACTED=$(mktemp)
-for INSTANCE in $(cat "$INSTANCE_FILENAMES")
+INSTANCE=$(mktemp)
+for INSTANCE_ORIG in $(cat "$INSTANCE_FILENAMES")
 do
-    lzcat $INSTANCE.lzma > $INSTANCE_EXTRACTED
+    lzcat $INSTANCE_ORIG.lzma > $INSTANCE
 
-    echo -n "$(basename $INSTANCE .xml)\t$(wc -c < $INSTANCE_EXTRACTED)\t"
-    echo -n "$(./naxos-xcsp3.params $INSTANCE_EXTRACTED)\t"
+    echo -n "$(basename $INSTANCE_ORIG .xml)\t$(wc -c < $INSTANCE)\t"
+    echo -n "$(./naxos-xcsp3.params $INSTANCE)\t"
 
     set +e  # Temporarily allow errors
     time -o AC_Time.txt -f "%e" \
         timeout --preserve-status --kill-after=1m 40m \
-        ./naxos-xcsp3.AC $INSTANCE_EXTRACTED > $SOLUTION
+        ./naxos-xcsp3.AC $INSTANCE > $SOLUTION
     STATUS=$?
     set -e
-    validate_if_solution_exists $STATUS AC
-    echo -n "$(cat AC_Time.txt)\t"
+    if [ $STATUS -eq 1 ]
+    then
+        echo
+        cat $SOLUTION
+    elif [ $STATUS -eq 143 ]
+    then
+        echo "KILLED"
+        cat $SOLUTION
+    else
+        validate_if_solution_exists $STATUS AC
+        echo -n "$(cat AC_Time.txt)\t"
 
-    set +e  # Temporarily allow errors
-    time -o BC_Time.txt -f "%e" \
-        timeout --preserve-status --kill-after=1m 40m \
-        ./naxos-xcsp3.BC $INSTANCE_EXTRACTED > $SOLUTION
-    STATUS=$?
-    set -e
-    validate_if_solution_exists $STATUS BC
-    echo -n "$(cat BC_Time.txt)\t"
+        set +e  # Temporarily allow errors
+        time -o BC_Time.txt -f "%e" \
+            timeout --preserve-status --kill-after=1m 40m \
+            ./naxos-xcsp3.BC $INSTANCE > $SOLUTION
+        STATUS=$?
+        set -e
+        validate_if_solution_exists $STATUS BC
+        echo -n "$(cat BC_Time.txt)\t"
 
-    echo "$(cat AC_Cost.txt)\t$(cat BC_Cost.txt)"
-    rm $SOLUTION AC_Time.txt BC_Time.txt AC_Cost.txt BC_Cost.txt
+        echo "$(cat AC_Cost.txt)\t$(cat BC_Cost.txt)"
+    fi
+    rm -f $SOLUTION AC_Time.txt BC_Time.txt AC_Cost.txt BC_Cost.txt
 done
-rm $INSTANCE_EXTRACTED
+rm $INSTANCE
