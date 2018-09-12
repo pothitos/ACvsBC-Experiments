@@ -19,7 +19,15 @@ validate_if_solution_exists() {
     else
         validate_exit_status $STATUS
     fi
-    get_solution_cost > ${METHOD}_Cost.txt
+    COST=$(get_solution_cost)
+    if [ ! -z "$COST" ]
+    then
+        if grep -q "\<maximize\>" $INSTANCE_EXTRACTED
+        then
+            COST=$(echo "1 / $COST" | bc -l)
+        fi
+    fi
+    echo "$COST" > ${METHOD}_Cost.txt
 }
 
 INSTANCE_FILENAMES="$1"
