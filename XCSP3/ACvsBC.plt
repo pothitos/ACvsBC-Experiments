@@ -8,6 +8,10 @@ set xlabel "f(len, n, d, d_{AVG}, e)"
 set ylabel "TIME_{AC} / TIME_{BC}"
 
 f(len, n, d, d_avg, e) = d / n
+ratio(AC, BC) = AC / BC
 
-plot "results/CompetitionInstances.dat" using \
-    (f($2, $3, $4, $5, $6)):($7 / $8) notitle
+stats "results/CompetitionInstances.dat" index 0 using \
+    (f($2, $3, $4, $5, $6)):(ratio($7, $8)) nooutput
+plot "" index 0 using (f($2, $3, $4, $5, $6)):(ratio($7, $8)) notitle, \
+     "" index 1 using (f($2, $3, $4, $5, $6)):(STATS_min_y) notitle, \
+     "" index 2 using (f($2, $3, $4, $5, $6)):(STATS_max_y) notitle
