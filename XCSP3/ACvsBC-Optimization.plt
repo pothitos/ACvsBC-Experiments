@@ -12,6 +12,9 @@ ratio(AC, BC) = AC / BC
 
 stats "results/CompetitionInstancesOptimization.dat" index 0 using \
     (f($2, $3, $4, $5, $6)):(ratio($9, $10)) nooutput
-plot "" index 0 using (f($2, $3, $4, $5, $6)):(ratio($9, $10)) notitle, \
-     "" index 1 using (f($2, $3, $4, $5, $6)):(STATS_min_y) notitle, \
-     "" index 2 using (f($2, $3, $4, $5, $6)):(STATS_max_y) notitle
+plot "" index 0 using (f($2, $3, $4, $5, $6)):(ratio($9, $10)) notitle \
+        with points linecolor 1 pointtype 12, \
+     "" index 1 using (f($2, $3, $4, $5, $6)):(STATS_min_y) notitle \
+        with points linecolor 1 pointtype 10, \
+     "" index 2 using (f($2, $3, $4, $5, $6)):(STATS_max_y) notitle \
+        with points linecolor 1 pointtype 8
