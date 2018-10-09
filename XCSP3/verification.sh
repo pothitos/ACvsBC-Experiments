@@ -1,5 +1,4 @@
-#!/bin/sh
-set -ev
+#!/bin/sh -ev
 
 # Patch solver to print CSP parameters
 cd ../naxos/

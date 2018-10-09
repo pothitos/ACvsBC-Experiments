@@ -1,5 +1,4 @@
-#!/bin/sh
-set -e
+#!/bin/sh -e
 
 cd ../naxos/apps/XCSP3
 . verification/common_functions.sh
