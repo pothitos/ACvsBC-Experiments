@@ -1,4 +1,4 @@
-# Arc Consistency vs. Bounds Consistency Solver Patches [![Build Status](https://travis-ci.org/pothitos/ACvsBC-Solver-Patches.svg?branch=master)](https://travis-ci.org/pothitos/ACvsBC-Solver-Patches)
+# Arc Consistency vs. Bounds Consistency Patches [![Build Status](https://travis-ci.org/pothitos/ACvsBC-Solver-Patches.svg?branch=master)](https://travis-ci.org/pothitos/ACvsBC-Solver-Patches)
 
 :warning: This repository contains the _source code_ that
 supports the corresponding
