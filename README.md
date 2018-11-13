@@ -8,7 +8,7 @@ supports the corresponding
 > different solvers: one that maintains arc consistency
 > (AC) and another that maintains bounds consistency (BC).
 > Therefore, we took the open source [Naxos
-> Solver](https://github.com/pothitos/naxos) and we
+> Solver](https://github.com/pothitos/naxos) and
 > created its AC and BC variations.
 > 
 > Note that the original Naxos Solver implements several
