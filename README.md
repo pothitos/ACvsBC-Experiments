@@ -9,7 +9,7 @@ supports the corresponding
 > (AC) and another that maintains bounds consistency (BC).
 > Therefore, we took the open source [Naxos
 > Solver](https://github.com/pothitos/naxos) and
-> created its AC and BC variations.
+> created its AC and BC variants.
 > 
 > Note that the original Naxos Solver implements several
 > consistency levels for various constraints. Consequently,
