@@ -15,7 +15,7 @@ supports the corresponding
 > consistency levels for various constraints. Consequently,
 > we created two sets of patches, one that implements pure
 > arc consistency and another for pure bounds consistency
-> for every constraint.
+> for every constraint employed.
 > 
 > Similarly to the theory of this work, we considered only
 > binary constraints (that apply between two constrained
