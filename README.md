@@ -2,7 +2,7 @@
 
 :warning: This repository contains the _source code_ that
 supports the corresponding
-[article](https://github.com/pothitos/ACvsBC).
+[article](https://gitlab.com/pothitos/ACvsBC).
 
 > In order to make comparisons, we had to employ two
 > different solvers: one that maintains arc consistency
